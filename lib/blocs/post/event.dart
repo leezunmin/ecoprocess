@@ -8,63 +8,36 @@ abstract class PostEvent extends Equatable {
 
 class InitialOnce extends PostEvent {}
 
-
 class Fetch extends PostEvent {}
 
-// class FetchNext extends PostEvent {
-//   final AppPostHeaderEnum? currentHeader;
-//   final AppPostSortEnum? currentSort;
-//
-//   //다음 페이징을 위한 비교값
-//   final List<AppPost>? postList;
-//
-//   FetchNext({this.currentHeader, this.currentSort, this.postList});
-//
-//   @override
-//   List<Object> get props => [postList!];
-// }
-
 class AddPostEvent extends PostEvent {
-
   final Post post;
-  final String? title;
-  final String? text;
-  final String? ownerId;
-  final String? nickName;
+  // final String? title;
+  // final String? text;
 
-  final bool? voteActivate;
-  // final List<AppVoteItem>? voteList;
-  // final AppVote? vote;
-
-  AddPostEvent(
-      {
-        required this.post,
-        this.title,
-        this.text,
-        this.ownerId,
-        this.nickName,
-        // this.header,
-        // this.imgDownload,
-        // this.deleteImgPath,
-        this.voteActivate,
-        // this.voteList,
-        // this.vote
-
-      });
+  AddPostEvent({
+    required this.post,
+    // this.title,
+    // this.text,
+  });
 
   // 게시글 여러번 입력 시
   @override
   List<Object> get props => [
-    post,
-    title!,
-    text!,
-    ownerId!,
-    nickName!,
-    // imgDownload!,
-    // deleteImgPath!,
-    voteActivate!,
-    // {voteList, vote}
-  ];
+        post,
+        // title!,
+        // text!,
+      ];
+}
+
+class RemovePostEvent extends PostEvent {
+  final String uid;
+
+  RemovePostEvent({
+    required this.uid,
+  });
+  @override
+  List<Object> get props => [uid];
 }
 
 // class SetFilter extends PostEvent {

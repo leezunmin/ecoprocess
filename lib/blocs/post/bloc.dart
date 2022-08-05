@@ -5,7 +5,7 @@ import 'dart:io';
 // import 'package:application/services/log_mixin.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:eco_process/blocs/post/post_controller.dart';
+import 'package:eco_process/blocs/post_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:equatable/equatable.dart';
@@ -48,11 +48,17 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
       emit(Loaded(
         postList: result,
-        // currentHeader: initHeader,
-        // currentSort: initSort,
-        // 블록 이벤트로 넘어오기 이전에 텍스트 검증하고 오기때문에 isValidated true 이고 블록리스너로 라우팅
         isValidated: true,
-        // isIncludeVote: event.voteList != null ? true : false
+      ));
+    }, transformer: distinctEvent());
+
+    on<RemovePostEvent>((event, emit) async {
+
+      await repository.removePost(event.uid);
+      final result = await getFetchFirst();
+
+      emit(Loaded(
+        postList: result,
       ));
     }, transformer: distinctEvent());
 
@@ -64,7 +70,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
             writer: event.post.writer,
             title: event.post.title,
             content: event.post.content,
-            isCreatedAt: DateTime.now().toString());
+            isCreatedAt: DateTime.now().toString(),
+            deleteFlag: "N");
         await repository.addPost(post);
 
         final result = await getFetchFirst();
@@ -81,7 +88,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   }
 
   // 맨 첫번째 페이징값 가져오기 쿼리
-  Future<List<Post>> getFetchFirst({String? filter, String? header}) async {
+  Future<List<Post>> getFetchFirst() async {
     List<Post> postList = [];
 
     try {

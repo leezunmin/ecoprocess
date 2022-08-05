@@ -13,7 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../blocs/post/bloc.dart';
-import '../../blocs/post/post_controller.dart';
+import '../../blocs/post_controller.dart';
 import '../../models/post.dart';
 import '../../routes/navi_repository.dart';
 import '../../style/colors.dart';
@@ -22,16 +22,18 @@ import 'package:get/get.dart';
 
 class PostReadScreen extends StatefulWidget {
   static const routeName = '/read';
+  final Post post;
 
-  const PostReadScreen() : super();
+  const PostReadScreen(this.post) : super();
 
   @override
-  _PostReadScreenState createState() => _PostReadScreenState();
+  _PostReadScreenState createState() => _PostReadScreenState(post);
 }
 
 class _PostReadScreenState extends State<PostReadScreen> {
+  _PostReadScreenState(this.post);
 
-
+  late Post post;
   late final NavigatorState _rootNavi;
   final bool voteAdded = false;
   // AppPostHeaderEnum _currentHeader = AppPostHeaderEnum.unknown;
@@ -65,6 +67,7 @@ class _PostReadScreenState extends State<PostReadScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('포스트 값 >> ' + post.title);
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -77,139 +80,89 @@ class _PostReadScreenState extends State<PostReadScreen> {
                 Navigator.of(context).pop();
               }),
           title: Text("게시글 읽기"),
-          
+          actions: [
+            GetBuilder<PostController>(builder: (_) {
+              return Container(
+                  margin: EdgeInsets.only(top: 14, bottom: 14, right: 20),
+                  padding: EdgeInsets.only(bottom: 2),
+                  decoration: BoxDecoration(
+                      color: Colors.lightBlue,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: TextButton(
+                      onPressed: () async {
+                        if (_.isUsersId == post.writer) {
+                          _getPostBloc.add(RemovePostEvent(uid: post.uid!));
+                          Navigator.of(context).pushNamed('/board');
+                        }
+                      },
+                      child: _.isUsersId == post.writer
+                          ? Text("삭제",
+                              style: theme.textTheme.subtitle1!
+                                  .copyWith(color: AppColors.white))
+                          : Text("삭제",
+                              style: theme.textTheme.subtitle1!
+                                  .copyWith(color: AppColors.black12))));
+            })
+          ],
         ),
         body: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints boxConstraints) {
-            final appWidth = boxConstraints.maxWidth;
-            final appHeight = boxConstraints.maxHeight;
             return SingleChildScrollView(
                 child: SafeArea(
-                    child: Container(
-                      // color: Colors.lightBlueAccent,
-              height: appHeight,
-              // width: width,
+                    child: SizedBox(
+              width: boxConstraints.maxWidth,
               child: Column(
                 children: [
-                  Text('게시글 읽기')
+                  AppSpacers.height24,
+
+                  AppSpacers.height8,
+                  Container(
+                      padding: AppEdgeInsets.horizontal16,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          post.title!,
+                          // style: titleStyle,
+                        ),
+                      )),
+                  AppSpacers.height8,
+                  // _info(),
+                  Padding(
+                    padding: AppEdgeInsets.horizontal16,
+                    child: Divider(
+                      height: 32,
+                      thickness: 1,
+                    ),
+                  ),
+                  AppSpacers.height8,
+                  Container(
+                      padding: AppEdgeInsets.horizontal16,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          post.content,
+                          maxLines: null,
+                          textAlign: TextAlign.justify,
+                          // style: contentStyle,
+                        ),
+                      )),
+                  AppSpacers.height24,
+
+                  AppSpacers.height24,
+                  Divider(
+                    thickness: 1,
+                    height: 1,
+                  ),
+
+                  Container(
+                    color: AppColors.border,
+                    height: 6,
+                  ),
+                  AppSpacers.height16,
                 ],
               ),
             )));
           },
         ));
   }
-
-  /*_onAddButton(BuildContext context) {
-    final _imgBloc = BlocProvider.of<ImageBloc>(context);
-
-    showModalBottomSheet(
-        backgroundColor: AppColors.transparent,
-        context: context,
-        useRootNavigator: true,
-        builder: (BuildContext context) {
-          return PhotoSelectorBottomSheet(
-            onPick: (file) async {
-              l.info(this, 'file >>> ' + file.toString());
-              imgProgress.sink.add(true);
-              if (file != null) {
-                _imgBloc.add(GetLoadImage(file));
-              }
-            },
-            onPhotoPicker: () {},
-          );
-        });
-  }*/
-
-  /*Widget _blocWidget(BoxConstraints viewportConstraints) {
-    final _imgBloc = BlocProvider.of<ImageBloc>(context);
-    final voteBlocState = BlocProvider.of<VoteBloc>(context).state;
-
-    return Column(
-      children: [
-        // 상태에 대해 1회만 작동함, 라우팅으로 사용
-        BlocListener<PostBloc, PostState>(
-          listenWhen: (context, state) {
-            return state is Loaded;
-          },
-          listener: (context, state) {
-            if (state is Loaded) {
-              if (state.isValidated == true) {
-                print('state.isValidated == true ');
-                // 라우팅 임시로 막음
-                _rootNavi.pop();
-              } else if (state.isValidated == true &&
-                  state.isIncludeVote == true) {
-                print('state.isIncludeVote == true ');
-                // 라우팅 임시로 막음
-                _rootNavi.pop();
-                _rootNavi.pop();
-              }
-            }
-          },
-          child: Container(),
-        ),
-
-        BlocBuilder<ImageBloc, ImageBlocState>(
-          // 사진 지웠을때랑 사진 첨부했을때 빌드됨
-            buildWhen: (previous, current) =>
-            (current is ImagePickerSuccess || current is ImagePickerEmpty),
-            builder: (BuildContext context, ImageBlocState state) {
-              print('Community Write ImageBlocState >> ' + state.toString());
-
-              if (state is ImagePickerEmpty) {
-                l.info(this, 'BlocBuilder state is ImagePickerEmpty ');
-                return Container();
-              } else if (state is ImagePickerLoading) {
-                l.info(this, 'ImagePickerLoading');
-                return Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        AppColors.primary,
-                      ),
-                    ));
-              }
-
-
-              else if (state is ImagePickerSuccess) {
-                // 이미지 첨부가 새로 되면 첨부여부 초기화
-                imgProgress.sink.add(false);
-
-                return Container(
-                  width: viewportConstraints.maxWidth - 30,
-                  height: viewportConstraints.maxHeight - 300,
-                  decoration: BoxDecoration(
-                      borderRadius: AppBorderRadius.circular8,
-                      border: Border.all(width: 1, color: AppColors.gray[030]!),
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(
-                            state.imgDownload.toString()),
-                      )),
-                  child: Align(
-                    alignment: FractionalOffset(0.99, 0.01),
-                    //사진 삭제 아이콘
-                    child: IconButton(
-                      icon: ImageIcon(Assets.images.icCancelSolidBl24,
-                          color: AppColors.gray[60]),
-                      onPressed: () {
-                        _imgBloc.add(
-                            CancleImage(deleteImgPath: state.deleteImgPath));
-                      },
-                    ),
-                  ),
-                );
-              }
-              return SizedBox();
-            }),
-
-        SizedBox(height: 50),
-
-        // voteBlocState.runtimeType == EditingVoteListState
-        //     ? VoteBlocEditor()
-        //     : SizedBox(),
-
-        SizedBox(height: 50),
-      ],
-    );
-  }*/
 }

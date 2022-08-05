@@ -1,9 +1,12 @@
+import 'package:eco_process/views/post/post_read_screen.dart';
 import 'package:eco_process/views/post/post_write_screen.dart';
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
 import '../../blocs/post/bloc.dart';
+import '../../blocs/user_repository/bloc.dart';
+import '../../models/post.dart';
 import '../../routes/navi_repository.dart';
 import '../../routes/routes.dart';
 import '../../style/colors.dart';
@@ -38,41 +41,65 @@ class PostMainViewState extends State<PostMainView> {
 
     return Scaffold(
         appBar: AppBar(
-          elevation: 1,
-          title:
-          Row(
-            children: [
-              Text("게시판"),
-              AppSpacers.width70,
-              ElevatedButton(
-                onPressed: () async {
-                  // _rootNavi = context.read<NaviRepository>().mainKey.currentState!;
-                  // _rootNavi.pushNamed(Routes.write, arguments: '글쓰기');
+            elevation: 1,
+            title: Row(
+              children: [
+                Text("게시판"),
+                AppSpacers.width70,
+                BlocBuilder<UserRepositoryBloc, UserRepositoryState>(
+                    // buildWhen: (previous, current) => previous != current && current is LoadedComment,
+                    builder: (BuildContext context, UserRepositoryState state) {
+                  if (state is UserInitStatus) {
+                    return Text('비로그인');
+                  } else if (state is UserStatus) {
+                    return ElevatedButton(
+                      onPressed: () async {},
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.resolveWith(
+                          (states) {
+                            if (states.contains(MaterialState.disabled)) {
+                              return Color.fromRGBO(38, 38, 38, 0.4);
+                            } else {
+                              return Color(0x9fffffff);
+                            }
+                          },
+                        ),
+                      ),
+                      child: Text(state.currentUser!.email + "  님 로그인"),
+                    );
+                  } else {
+                    return Text('비로그인');
+                  }
+                }),
+                AppSpacers.width70,
+                ElevatedButton(
+                  onPressed: () async {
+                    // _rootNavi = context.read<NaviRepository>().mainKey.currentState!;
+                    // _rootNavi.pushNamed(Routes.write, arguments: '글쓰기');
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) {
-                      return PostWriteScreen();
-                    }),
-                  );
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.resolveWith(
-                        (states) {
-                      if (states.contains(MaterialState.disabled)) {
-                        return Color.fromRGBO(38, 38, 38, 0.4);
-                      } else {
-                        return Color(0x9fffffff);
-                      }
-                    },
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return PostWriteScreen();
+                      }),
+                    );
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith(
+                      (states) {
+                        if (states.contains(MaterialState.disabled)) {
+                          return Color.fromRGBO(38, 38, 38, 0.4);
+                        } else {
+                          return Color(0x9fffffff);
+                        }
+                      },
+                    ),
                   ),
+                  child: Text('글쓰기'),
                 ),
-                child: Text('글쓰기'),
-              ),
-            ],
-          )
-
-        ),
+                AppSpacers.width70,
+              ],
+            )),
         body: ConstrainedBox(
             constraints: const BoxConstraints.expand(),
             child: Container(
@@ -84,7 +111,6 @@ class PostMainViewState extends State<PostMainView> {
 
                 children: [
                   AppSpacers.height80,
-
                   BlocBuilder<PostBloc, PostState>(
                       buildWhen: (previous, current) =>
                           previous != current && current is Loaded,
@@ -131,19 +157,16 @@ class PostMainViewState extends State<PostMainView> {
                                               BoxConstraints constraints) {
                                         final containerWidth =
                                             constraints.maxWidth;
-                                        return
-                                          Container(
+                                        return Container(
                                             // color: Colors.red,
                                             width: screentWidth * 0.7,
                                             child: InkWell(
                                               onTap: () {
-                                                // onSelectCell(state.postList.elementAt(index));
+                                                onSelectCell(state.postList.elementAt(index));
                                               },
-                                              child: PostCard(
-                                                  state.postList.elementAt(index)),
-                                            )
-                                          );
-
+                                              child: PostCard(state.postList
+                                                  .elementAt(index)),
+                                            ));
                                       });
                                     }
                                   }));
@@ -169,4 +192,29 @@ class PostMainViewState extends State<PostMainView> {
               ),
             )));
   }
+
+  void onSelectCell(Post? post) {
+
+    // _rootNavi.push((MaterialPageRoute(
+    //     builder: (context) => Provider?.value(
+    //       value: _rootNavi,
+    //       builder: (context, child) {
+    //         return MultiBlocProvider(
+    //           providers: [
+    //           ],
+    //           child: CommunityReaderScreen(post!),
+    //         );
+    //       },
+    //     ))));
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PostReadScreen(post!),
+      ),
+    );
+
+
+  }
+
 }

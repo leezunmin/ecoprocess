@@ -13,41 +13,45 @@
 //   }
 // }
 
-
-
-import 'dart:async';
-import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:eco_process/blocs/user_repository/state.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:get/get.dart';
+import '../post_controller.dart';
 
-import 'event.dart';
+part 'event.dart';
+part 'state.dart';
 
-// part 'user_repository_event.dart';
-// part 'user_repository_state.dart';
 
 class UserRepositoryBloc
     extends Bloc<UserRepositoryEvent, UserRepositoryState> {
-
- /* final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  /* final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final ApiService _apiService = ApiService();
   final FireStoreDB _fireStoreDB = FireStoreDB();
   late FortuneLogic _fortuneLogic;*/
 
-
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final reportSub = BehaviorSubject<TextEditingController>();
+  String loginId = "비로그인";
+  final _postController = Get.find<PostController>();
 
-  UserRepositoryBloc({initialState}) : super(InitialUserRepositoryState()) {
+  UserRepositoryBloc({required UserRepositoryState initialState})
+      : super(initialState) {
     debugPrint('블록 UserRepositoryBloc 생성>>>');
 
+    on<Login>((event, emit) async {
+      // final result = await getFetchFirst();
 
+      print('로긴 정보 >> ' + event.currentUser!.email);
+      _postController.isUsersId = event.currentUser!.email;
+
+      emit(UserStatus(true,
+          currentUser: event.currentUser, googleSignIn: event.googleSignIn));
+    }, transformer: distinctEvent());
   }
 
   // 이벤트 핸들러
@@ -55,5 +59,9 @@ class UserRepositoryBloc
     return (events, mapper) => events.distinct().flatMap((mapper));
   }
 
-
+  @override
+  @mustCallSuper
+  Future<void> close() async {
+    return super.close();
+  }
 }

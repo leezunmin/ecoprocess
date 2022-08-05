@@ -8,12 +8,13 @@
 // import 'package:application/styles/styles.dart';
 // import 'package:application/views/views.dart';
 
+import 'package:eco_process/blocs/user_repository/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import '../../blocs/post/bloc.dart';
-import '../../blocs/post/post_controller.dart';
+import '../../blocs/post_controller.dart';
 import '../../models/post.dart';
 import '../../routes/navi_repository.dart';
 import '../../style/colors.dart';
@@ -41,9 +42,8 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
   // AppPostHeaderEnum _currentHeader = AppPostHeaderEnum.unknown;
 
   late final PostBloc _getPostBloc;
-  /*late final ImageBloc _imgBloc;
-  late final VoteBloc _voteBloc;*/
-
+  late final UserRepositoryBloc _getUserBloc;
+  final String user = "손님";
   final imgProgress = BehaviorSubject<bool>();
 
   @override
@@ -53,24 +53,23 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
     // _rootNavi = context.read<NavigationService>().rootKey.currentState!;
 
     _rootNavi = context.read<NaviRepository>().mainKey.currentState!;
-
     _getPostBloc = BlocProvider.of<PostBloc>(context);
-    // _getBloc.postBlocTitleSub.sink.add(titleEditingController!);
-    // _getBloc.postBlocContentSub.sink.add(contentEditingController!);
-
+    _getUserBloc = BlocProvider.of<UserRepositoryBloc>(context);
     imgProgress.sink.add(false);
+
   }
 
   @override
   void dispose() {
-    titleEditingController!.dispose();
-    contentEditingController!.dispose();
+    // titleEditingController!.dispose();
+    // contentEditingController!.dispose();
     imgProgress.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -98,7 +97,9 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
                       onPressed: () async {
                         print('글 제목' + titleEditingController!.text);
 
-                        _getPostBloc.add(AddPostEvent(title: titleEditingController!.text, post: Post(writer: '11', isCreatedAt: '22', title: '33', content: '44')));
+                        _getPostBloc.add(AddPostEvent(
+                            post: Post(writer: _getUserBloc.loginId, isCreatedAt: '', title: titleEditingController!.text,
+                                content: contentEditingController!.text, deleteFlag: 'N')));
                         // _rootNavi.pushNamed(Routes.board, arguments: '메인뷰');
 
                         debugPrint('사용자 입력 트루');

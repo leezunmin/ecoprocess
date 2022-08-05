@@ -10,7 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'blocs/post/bloc.dart';
-import 'blocs/post/post_controller.dart';
+import 'blocs/post_controller.dart';
 import 'blocs/user_repository/bloc.dart';
 import 'package:get/get.dart';
 
@@ -47,7 +47,7 @@ void main() async {
                 repository: repository)),
         BlocProvider<UserRepositoryBloc>(
             lazy: false,
-            create: (BuildContext context) => UserRepositoryBloc()),
+            create: (BuildContext context) => UserRepositoryBloc(initialState: UserInitStatus())),
       ],
       child: const MyApp(),
     ),

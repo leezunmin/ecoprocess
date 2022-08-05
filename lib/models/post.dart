@@ -9,6 +9,8 @@ class Post {
   String title;
   String content;
   String isCreatedAt;
+  String? uid;
+  String deleteFlag;
 
 
   Post({
@@ -16,6 +18,8 @@ class Post {
     required this.title,
     required this.content,
     required this.isCreatedAt,
+    required this.deleteFlag,
+    this.uid
 
   });
 
@@ -24,6 +28,8 @@ class Post {
     content: json['content'],
     title: json['title'],
     writer: json['writer'],
+    uid: json['uid'],
+    deleteFlag: json['deleteFlag'],
   );
 
   Map<String, dynamic> toJson() {
@@ -32,6 +38,7 @@ class Post {
       'title': title,
       'content': content,
       'isCreatedAt': isCreatedAt,
+      'uid': uid,
 
     };
   }

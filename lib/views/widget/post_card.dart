@@ -24,125 +24,112 @@ class PostCard extends StatelessWidget {
     TextStyle contentStyle = theme.textTheme.caption!.apply(color: AppColors.text40);
     TextStyle infoStyle = theme.textTheme.caption!.apply(color: AppColors.text50,);
 
-    return Container(
-      // color: Colors.amber,
-      margin: AppEdgeInsets.vertical8.add(AppEdgeInsets.horizontal16),
-      child: Column(
-        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                          // crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              data!.title,
-                              style: titleStyle,
-                              overflow: TextOverflow.clip,
-                            ),
-                            AppSpacers.height8,
-                            SizedBox(
-                              height: 32,
-                              child: Text(
-                                data!.content,
-                                style: contentStyle,
-                                // minFontSize: 13,
-                                maxLines: 2,
-                              ),
-                            )
-                          ]),
-                    ],
-                  )),
-              AppSpacers.width4,
 
-              // data!.voteUid != null
-              //     ? Text('[투표]',
-              //     style: AppTypos.noto_light.apply(
-              //         fontSizeDelta: -2.0, color: AppColors.primaryDark))
-              //     : const SizedBox(),
-              // AppSpacers.width16,
-              // data!.imgDownload == ""
-              //     ? AppSpacers.height64
-              //     : Container(
-              //
-              //   width: 64,
-              //   height: 64,
-              //   decoration: BoxDecoration(
-              //       image: DecorationImage(
-              //         fit: BoxFit.cover,
-              //         image:
-              //         CachedNetworkImageProvider(data!.imgDownload!),
-              //       ),
-              //       // border: Border.all(width: 1, color: AppColors.primary),
-              //       borderRadius: AppBorderRadius.circular8),
-              // ),
-            ],
-          ),
-          AppSpacers.height16,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                  width: 80,
-                  child: Text(
-                    // data!.nickName,
-                    data!.writer,
-                    overflow: TextOverflow.ellipsis,
-                    style: infoStyle,
-                  )),
-              /*Text(
+    return LayoutBuilder(builder:
+        (BuildContext context,
+        BoxConstraints constraints) {
+      final screenWidth = constraints.maxWidth;
+      return Container(
+        // color: Colors.amber,
+        margin: AppEdgeInsets.vertical8.add(AppEdgeInsets.horizontal16),
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                data!.title,
+                                style: titleStyle,
+                                overflow: TextOverflow.clip,
+                              ),
+                              AppSpacers.height8,
+                              SizedBox(
+                                height: 32,
+                                child: Text(
+                                  data!.content,
+                                  style: contentStyle,
+                                  // minFontSize: 13,
+                                  maxLines: 2,
+                                ),
+                              )
+                            ]),
+                      ],
+                    )),
+                AppSpacers.width4,
+
+              ],
+            ),
+            AppSpacers.height16,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                    width: screenWidth * 0.17,
+                    child: Text(
+                      // data!.nickName,
+                      data!.writer,
+                      overflow: TextOverflow.ellipsis,
+                      style: infoStyle,
+                    )),
+                /*Text(r
                   data!.nickName,
                   style: infoStyle,
                 ),*/
-              AppSpacers.width16,
-              Expanded(
-                flex: 5,
-                child: Text(
-                  // formatyyMMddHHmm(data!.isCreatedAt),
-                  data!.isCreatedAt,
-                  overflow: TextOverflow.ellipsis,
-                  style: infoStyle,
+                AppSpacers.width16,
+                Expanded(
+                  flex: 5,
+                  child: Text(
+                    // formatyyMMddHHmm(data!.isCreatedAt),
+                    data!.isCreatedAt,
+                    overflow: TextOverflow.ellipsis,
+                    style: infoStyle,
+                  ),
                 ),
-              ),
-              Expanded(
-                  flex: 4,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      // ImageIcon(
-                      //   Assets.images.icHeart18,
-                      //   size: 15,
-                      // ),
-                      AppSpacers.width8,
-                      // Text(
-                      //   // data!.likeCount.toString(),
-                      //   data!.content,
-                      //   style: infoStyle,
-                      //   overflow: TextOverflow.ellipsis,
-                      // ),
-                      AppSpacers.width8,
-                      AppSpacers.width8,
-                      // ImageIcon(
-                      //   Assets.images.icReply18,
-                      //   size: 15,
-                      // ),
-                      AppSpacers.width8,
-                      // Text(
-                      //   data!.replyCount.toString(),
-                      //   style: infoStyle,
-                      //   overflow: TextOverflow.ellipsis,
-                      // ),
-                    ],
-                  )),
-            ],
-          )
-        ],
-      ),
-    );
+                Expanded(
+                    flex: 4,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        // ImageIcon(
+                        //   Assets.images.icHeart18,
+                        //   size: 15,
+                        // ),
+                        AppSpacers.width8,
+                        // Text(
+                        //   // data!.likeCount.toString(),
+                        //   data!.content,
+                        //   style: infoStyle,
+                        //   overflow: TextOverflow.ellipsis,
+                        // ),
+                        AppSpacers.width8,
+                        AppSpacers.width8,
+                        // ImageIcon(
+                        //   Assets.images.icReply18,
+                        //   size: 15,
+                        // ),
+                        AppSpacers.width8,
+                        // Text(
+                        //   data!.replyCount.toString(),
+                        //   style: infoStyle,
+                        //   overflow: TextOverflow.ellipsis,
+                        // ),
+                      ],
+                    )),
+              ],
+            )
+          ],
+        ),
+      );
+    });
+
+
   }
 }

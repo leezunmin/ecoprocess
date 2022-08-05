@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../blocs/user_repository/bloc.dart';
 import '../routes/routes.dart';
 import '../routes/navi_repository.dart';
 
@@ -30,11 +31,13 @@ class SignInDemoState extends State<SignInDemo> {
   String _contactText = '';
 
   late final NavigatorState _rootNavi;
+  late final UserRepositoryBloc _getUserBloc;
 
   @override
   void initState() {
     super.initState();
      _rootNavi = context.read<NaviRepository>().mainKey.currentState!;
+    _getUserBloc = BlocProvider.of<UserRepositoryBloc>(context);
 
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
       setState(() {
@@ -75,6 +78,10 @@ class SignInDemoState extends State<SignInDemo> {
         _contactText = 'No contacts to display.';
       }
     });
+
+    final _getUserBloc = BlocProvider.of<UserRepositoryBloc>(context);
+    _getUserBloc.loginId = user.email;
+    _getUserBloc.add(Login(currentUser: user, googleSignIn: _googleSignIn));
   }
 
   String? _pickFirstNamedContact(Map<String, dynamic> data) {

@@ -8,19 +8,6 @@ abstract class PostState extends Equatable {
   List<Object> get props => [];
 }
 
-/*class GetInit extends PostState {
-  final List<AppPost>? postList;
-  final AppPostSortEnum? currentSort;
-  final AppPostHeaderEnum? currentHeader;
-
-  const GetInit({this.postList, this.currentSort, this.currentHeader});
-
-  @override
-  List<Object> get props => [postList!, currentSort!, currentHeader!];
-
-  @override
-  String toString() => 'getInitial { items: ${postList!.length} }';
-}*/
 
 class GetInit extends PostState {
   final List<Post>? postList;
