@@ -55,6 +55,7 @@ dev_dependencies:
   keyboard_attachable: ^2.1.0
   syncfusion_flutter_datagrid: ^20.1.48
   get: ^4.6.1
+  firebase_storage: ^10.3.4
   dio: ^4.0.4
   darty_json: ^1.0.0
   google_sign_in: ^5.2.1

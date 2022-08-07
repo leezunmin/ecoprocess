@@ -23,6 +23,7 @@ void main() async {
       appId: "1:29092948700:web:d119a537d3d9be67ae6219",
       messagingSenderId: "29092948700",
       projectId: "ecorichprocess",
+      storageBucket: "ecorichprocess.appspot.com",
     ),
   );
 

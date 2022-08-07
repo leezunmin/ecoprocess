@@ -1,4 +1,5 @@
 
+import 'package:eco_process/main.dart';
 import 'package:eco_process/views/login.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -10,6 +11,7 @@ class Routes {
   Routes._();
 
   static const String home = '/home';
+  static const String app = '/app';
   static const String detail = '/detail';
   static const String main = '/main';
   static const String board = '/board';
@@ -20,6 +22,7 @@ class Routes {
 
   static final routes = <String, WidgetBuilder>{
     // home: (BuildContext context) => HomeScreen(),
+    app : (BuildContext context) => MyApp(),
     login: (BuildContext context) => SignInDemo(),
 
     // detail: (BuildContext context) {

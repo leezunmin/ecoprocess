@@ -29,15 +29,13 @@ part 'state.dart';
 
 class UserRepositoryBloc
     extends Bloc<UserRepositoryEvent, UserRepositoryState> {
-  /* final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  final ApiService _apiService = ApiService();
-  final FireStoreDB _fireStoreDB = FireStoreDB();
-  late FortuneLogic _fortuneLogic;*/
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final reportSub = BehaviorSubject<TextEditingController>();
   String loginId = "비로그인";
   final _postController = Get.find<PostController>();
+  late final GoogleSignInAccount? currentUser;
+  late final GoogleSignIn? googleSignIn;
 
   UserRepositoryBloc({required UserRepositoryState initialState})
       : super(initialState) {
@@ -49,14 +47,39 @@ class UserRepositoryBloc
       print('로긴 정보 >> ' + event.currentUser!.email);
       _postController.isUsersId = event.currentUser!.email;
 
+      currentUser = event.currentUser;
+      googleSignIn = event.googleSignIn;
+
       emit(UserStatus(true,
           currentUser: event.currentUser, googleSignIn: event.googleSignIn));
-    }, transformer: distinctEvent());
+    },
+        transformer: distinctEvent()
+        //  transformer: asyncExpandEvent()
+    );
+
+    on<LogOut>((event, emit) async {
+
+      currentUser = null;
+      await googleSignIn!.signOut();
+      await googleSignIn!.disconnect();
+
+      _postController.isUsersId = "none";
+      emit(UserInitStatus());
+    },
+        transformer: distinctEvent()
+    );
+
+
   }
 
-  // 이벤트 핸들러
+  // 이벤트 distinct
   EventTransformer<UserRepositoryEvent> distinctEvent<UserRepositoryEvent>() {
     return (events, mapper) => events.distinct().flatMap((mapper));
+  }
+
+  // 이벤트 asyncExpand
+  EventTransformer<UserRepositoryEvent> asyncExpandEvent<UserRepositoryEvent>() {
+    return (events, mapper) => events.asyncExpand((mapper));
   }
 
   @override

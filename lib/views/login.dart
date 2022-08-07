@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/user_repository/bloc.dart';
 import '../routes/routes.dart';
 import '../routes/navi_repository.dart';
+import 'main_view.dart';
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
   // Optional clientId
@@ -36,48 +37,72 @@ class SignInDemoState extends State<SignInDemo> {
   @override
   void initState() {
     super.initState();
+    init();
      _rootNavi = context.read<NaviRepository>().mainKey.currentState!;
     _getUserBloc = BlocProvider.of<UserRepositoryBloc>(context);
 
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
-      setState(() {
-        _currentUser = account;
+      print('onCurrentUserChanged >>>');
+
+      // setState(() {
+      //   _currentUser = account;
+      // });
+
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+
+        setState(() {
+          _currentUser = account;
+        });
       });
-      if (_currentUser != null) {
-        _handleGetContact(_currentUser!);
-      }
+
+      // if (_currentUser != null) {
+      //   _handleGetContact(_currentUser!);
+      // }
     });
+
+
     _googleSignIn.signInSilently();
+  }
+
+  Future<void> init() async{
+    final result = await _googleSignIn.isSignedIn();
+
+    if(result == true){
+      print('로긴된 상태인가');
+      await _googleSignIn.signOut();
+      await _googleSignIn.disconnect();
+      // _currentUser = null;
+    }
   }
 
   Future<void> _handleGetContact(GoogleSignInAccount user) async {
     print('핸들 겟 컨택');
-    setState(() {
-      _contactText = 'Loading contact info...';
-    });
+    // setState(() {
+    //   _contactText = 'Loading contact info...';
+    // });
     final http.Response response = await http.get(
       Uri.parse('https://people.googleapis.com/v1/people/me/connections'
           '?requestMask.includeField=person.names'),
       headers: await user.authHeaders,
     );
     if (response.statusCode != 200) {
-      setState(() {
-        _contactText = 'People API gave a ${response.statusCode} '
-            'response. Check logs for details.';
-      });
-      print('People API ${response.statusCode} response: ${response.body}');
-      return;
+      // setState(() {
+      //   _contactText = 'People API gave a ${response.statusCode} '
+      //       'response. Check logs for details.';
+      // });
+      // print('People API ${response.statusCode} response: ${response.body}');
+      // return;
     }
     final Map<String, dynamic> data =
     json.decode(response.body) as Map<String, dynamic>;
     final String? namedContact = _pickFirstNamedContact(data);
-    setState(() {
-      if (namedContact != null) {
-        _contactText = 'I see you know $namedContact!';
-      } else {
-        _contactText = 'No contacts to display.';
-      }
-    });
+    // setState(() {
+    //   if (namedContact != null) {
+    //     _contactText = 'I see you know $namedContact!';
+    //   } else {
+    //     _contactText = 'No contacts to display.';
+    //   }
+    // });
 
     final _getUserBloc = BlocProvider.of<UserRepositoryBloc>(context);
     _getUserBloc.loginId = user.email;
@@ -103,6 +128,15 @@ class SignInDemoState extends State<SignInDemo> {
   }
 
   Future<void> _handleSignIn() async {
+    print('_handleSignIn 실행');
+    // final result = await _googleSignIn.isSignedIn();
+    //
+    // if(result == true){
+    //   print('로긴된 상태인가');
+    //   await _googleSignIn.signOut();
+    //   await _googleSignIn.disconnect();
+    //   // _currentUser = null;
+    // }
     try {
       await _googleSignIn.signIn();
     } catch (error) {
@@ -117,6 +151,11 @@ class SignInDemoState extends State<SignInDemo> {
     if (user != null) {
       debugPrint('user가 null이 아닐때 출력(GoogleSignInAccount)');
 
+      final _getUserBloc = BlocProvider.of<UserRepositoryBloc>(context);
+      _getUserBloc.loginId = user.email;
+      _getUserBloc.add(Login(currentUser: user, googleSignIn: _googleSignIn));
+
+      // 원본
       _rootNavi.pushNamed(Routes.main, arguments: '메인뷰');
 
 

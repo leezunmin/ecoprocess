@@ -22,26 +22,15 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   final postBlocTitleSub = BehaviorSubject<TextEditingController>();
   final postBlocContentSub = BehaviorSubject<TextEditingController>();
   final FireStoreDB repository;
-
   final textInputSub = BehaviorSubject<bool>();
   bool isUserWritedText = false;
-  final _postController = Get.find<PostController>();
 
   PostBloc({
     required PostState initialState,
     required this.repository,
     // this.voteList
   }) : super(initialState) {
-    // 커뮤니티 게시글 가장 최신 첫번째 페이징값 가져오기 이벤트
 
-    textInputSub.stream.distinct().listen((textInput) {
-      print('텍스트 관찰 작동');
-      print('텍스트 인풋 값 >> ' + textInput.toString());
-      // textInput == true ? inputValidate(true) : inputValidate(false);
-      textInput == true
-          ? _postController.inputValidate(true)
-          : _postController.inputValidate(false);
-    });
 
     on<Fetch>((event, emit) async {
       final result = await getFetchFirst();

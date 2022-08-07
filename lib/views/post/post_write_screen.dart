@@ -44,7 +44,7 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
   late final PostBloc _getPostBloc;
   late final UserRepositoryBloc _getUserBloc;
   final String user = "손님";
-  final imgProgress = BehaviorSubject<bool>();
+  final _postController = Get.find<PostController>();
 
   @override
   void initState() {
@@ -55,15 +55,13 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
     _rootNavi = context.read<NaviRepository>().mainKey.currentState!;
     _getPostBloc = BlocProvider.of<PostBloc>(context);
     _getUserBloc = BlocProvider.of<UserRepositoryBloc>(context);
-    imgProgress.sink.add(false);
 
   }
 
   @override
   void dispose() {
-    // titleEditingController!.dispose();
-    // contentEditingController!.dispose();
-    imgProgress.close();
+    titleEditingController!.dispose();
+    contentEditingController!.dispose();
     super.dispose();
   }
 
@@ -81,7 +79,7 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
                 // 뒤로가기
                 Navigator.of(context).pop();
               }),
-          title: Text("글쓰기2"),
+          title: Text("글쓰기"),
           actions: [
             GetBuilder<PostController>(builder: (_) {
               return Container(
@@ -103,6 +101,9 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
                         // _rootNavi.pushNamed(Routes.board, arguments: '메인뷰');
 
                         debugPrint('사용자 입력 트루');
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('글 작성이 완료되었습니다')));
 
                         Navigator.of(context).pushNamed('/board');
                       },
@@ -167,10 +168,13 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
                       maxLength: 30,
                       maxLines: 1,
                       onChanged: (text) {
+
                         if (0 < text.trim().length) {
-                          _getPostBloc.textInputSub.sink.add(true);
+                          // _getPostBloc.textInputSub.sink.add(true);
+                          _postController.titleInputSub.sink.add(true);
                         } else if (text.trim().length == 0) {
-                          _getPostBloc.textInputSub.sink.add(false);
+                          // _getPostBloc.textInputSub.sink.add(false);
+                          _postController.titleInputSub.sink.add(false);
                         }
                       },
                     ),
@@ -207,6 +211,14 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
                       ),
                       style: theme.textTheme.bodyText2!
                           .apply(color: AppColors.text50),
+                      onChanged: (text) {
+
+                        if (0 < text.trim().length) {
+                          _postController.contentInputSub.sink.add(true);
+                        } else if (text.trim().length == 0) {
+                          _postController.contentInputSub.sink.add(false);
+                        }
+                      },
                     ),
                   ),
                   AppSpacers.height24,

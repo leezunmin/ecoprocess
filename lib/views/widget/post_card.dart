@@ -5,7 +5,7 @@
 // import 'package:application/utils/utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_storage/firebase_storage.dart';
 import '../../models/post.dart';
 import '../../style/colors.dart';
 import '../../style/tokens.dart';
@@ -13,22 +13,26 @@ import '../../utils/formatter.dart';
 
 class PostCard extends StatelessWidget {
   final Post? data;
+  final String? imgUrl;
   // Repository? _repo;
 
-  PostCard(this.data, {Key? key}) : super(key: key);
+  PostCard(this.data, this.imgUrl, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    TextStyle titleStyle = theme.textTheme.subtitle1!.apply(color: AppColors.text60);
-    TextStyle contentStyle = theme.textTheme.caption!.apply(color: AppColors.text40);
-    TextStyle infoStyle = theme.textTheme.caption!.apply(color: AppColors.text50,);
+    TextStyle titleStyle =
+        theme.textTheme.subtitle1!.apply(color: AppColors.text60);
+    TextStyle contentStyle =
+        theme.textTheme.caption!.apply(color: AppColors.text40);
+    TextStyle infoStyle = theme.textTheme.caption!.apply(
+      color: AppColors.text50,
+    );
 
-
-    return LayoutBuilder(builder:
-        (BuildContext context,
-        BoxConstraints constraints) {
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
       final screenWidth = constraints.maxWidth;
+      final screenHeight = constraints.maxHeight;
       return Container(
         // color: Colors.amber,
         margin: AppEdgeInsets.vertical8.add(AppEdgeInsets.horizontal16),
@@ -40,31 +44,52 @@ class PostCard extends StatelessWidget {
               children: [
                 Expanded(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          // crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                data!.title,
-                                style: titleStyle,
-                                overflow: TextOverflow.clip,
-                              ),
-                              AppSpacers.height8,
-                              SizedBox(
-                                height: 32,
-                                child: Text(
-                                  data!.content,
-                                  style: contentStyle,
-                                  // minFontSize: 13,
-                                  maxLines: 2,
-                                ),
-                              )
-                            ]),
-                      ],
-                    )),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                        // crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            data!.title,
+                            style: titleStyle,
+                            overflow: TextOverflow.clip,
+                          ),
+                          AppSpacers.height8,
+                          SizedBox(
+                            height: 32,
+                            child: Text(
+                              data!.content,
+                              style: contentStyle,
+                              // minFontSize: 13,
+                              maxLines: 2,
+                            ),
+                          )
+                        ]),
+                  ],
+                )),
                 AppSpacers.width4,
-
+                Container(
+                  width: screenWidth * 0.3,
+                  // height: screenHeight * 0.1,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          width: 64,
+                          height: 64,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                // fit: BoxFit.cover,
+                                fit: BoxFit.contain,
+                                image: CachedNetworkImageProvider(imgUrl!),
+                              ),
+                              // border: Border.all(width: 1, color: AppColors.primary),
+                              borderRadius: AppBorderRadius.circular8),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ],
             ),
             AppSpacers.height16,
@@ -129,7 +154,5 @@ class PostCard extends StatelessWidget {
         ),
       );
     });
-
-
   }
 }

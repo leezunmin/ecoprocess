@@ -3,7 +3,6 @@
 // class InitEvent extends UserRepositoryEvent {}
 //
 
-
 part of 'bloc.dart';
 
 @immutable
@@ -12,45 +11,35 @@ abstract class UserRepositoryEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-
-
 class Login extends UserRepositoryEvent {
-
   final GoogleSignInAccount? currentUser;
   final GoogleSignIn? googleSignIn;
-  final String? ownerId;
-  final String? nickName;
 
-  final bool? voteActivate;
-  // final List<AppVoteItem>? voteList;
-  // final AppVote? vote;
+  Login({
+    this.currentUser,
+    this.googleSignIn,
+  });
 
-  Login(
-      {
-        this.currentUser,
-        this.googleSignIn,
-        this.ownerId,
-        this.nickName,
-        // this.header,
-        // this.imgDownload,
-        // this.deleteImgPath,
-        this.voteActivate,
-        // this.voteList,
-        // this.vote
+  @override
+  List<Object> get props => [
+        currentUser!,
+        googleSignIn!,
+      ];
+}
 
-      });
+class LogOut extends UserRepositoryEvent {
+  final GoogleSignInAccount? currentUser;
+  final GoogleSignIn? googleSignIn;
 
-  // 게시글 여러번 입력 시
+  LogOut({
+    this.currentUser,
+    this.googleSignIn,
+  });
+
   @override
   List<Object> get props => [
     currentUser!,
     googleSignIn!,
-    ownerId!,
-    nickName!,
-    // imgDownload!,
-    // deleteImgPath!,
-    voteActivate!,
-    // {voteList, vote}
   ];
 }
 

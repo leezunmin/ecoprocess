@@ -39,7 +39,7 @@ class _MainViewState extends State<MainView>
   @override
   Widget build(BuildContext context) {
     final screentHeight = MediaQuery.of(context).size.height;
-    final screentWidth = MediaQuery.of(context).size.height;
+    final screentWidth = MediaQuery.of(context).size.width;
 
     debugPrint('screentWidth >> ' + screentWidth.toString());
 
