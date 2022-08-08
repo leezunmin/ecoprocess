@@ -4,11 +4,8 @@ import 'package:eco_process/routes/navi_repository.dart';
 import 'package:eco_process/views/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'blocs/post/bloc.dart';
 import 'blocs/post_controller.dart';
 import 'blocs/user_repository/bloc.dart';
@@ -28,9 +25,6 @@ void main() async {
   );
 
   final FireStoreDB repository = FireStoreDB();
-  // final _getPostController = Get.put(PostController());
-
-  // Get.put(PostController(), permanent: true);
   Get.put(PostController());
 
   runApp(

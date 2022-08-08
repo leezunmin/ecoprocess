@@ -25,7 +25,6 @@ class PostMainView extends StatefulWidget {
 }
 
 class PostMainViewState extends State<PostMainView> {
-  // late final NavigatorState _rootNavi;
   final _scrollController = ScrollController();
   late final PostBloc _getPostBloc;
   late final UserRepositoryBloc _getUserBloc;
@@ -37,24 +36,16 @@ class PostMainViewState extends State<PostMainView> {
     print('PostMainViewState initState ');
     _getPostBloc = BlocProvider.of<PostBloc>(context);
     _getUserBloc = BlocProvider.of<UserRepositoryBloc>(context);
-    // _rootNavi = context.read<NaviRepository>().mainKey.currentState!;
 
-    confirmURL();
+    getImgUrl();
   }
 
-  confirmURL() async {
+  getImgUrl() async {
     imgUrl = await FirebaseStorage.instance
         .ref()
         .child('photo')
         .child('/rabbit.jpg')
         .getDownloadURL();
-    String url2 = await FirebaseStorage.instance
-        .ref()
-        .child('photo/rabbit.jpg')
-        .getDownloadURL();
-
-    print('imgUrl 출력 ' + imgUrl);
-    print('url2 출력 ' + url2);
   }
 
   @override
@@ -62,9 +53,6 @@ class PostMainViewState extends State<PostMainView> {
     _getPostBloc.add(Fetch());
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-
-    //  imgRef = FirebaseStorage.instance.ref().child('photo').child('/rabbit.jpg');
-    // Reference imgRef = FirebaseStorage.instance.ref().child('photo/rabbit.jpg');
 
     return Scaffold(
         appBar: AppBar(
@@ -132,57 +120,6 @@ class PostMainViewState extends State<PostMainView> {
                             ),
 
                             SizedBox(width: screenWidth * 0.07),
-                            Container(
-                                decoration: BoxDecoration(
-                                    // color: Colors.lightBlue,
-                                    borderRadius: BorderRadius.circular(20)),
-                                width: screenWidth * 0.18,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    ElevatedButton(
-                                      onPressed: () async {
-                                        // _rootNavi = context.read<NaviRepository>().mainKey.currentState!;
-                                        // _rootNavi.pushNamed(Routes.write, arguments: '글쓰기');
-
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) {
-                                            return PostWriteScreen();
-                                          }),
-                                        );
-                                      },
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.resolveWith(
-                                          (states) {
-                                            if (states.contains(
-                                                MaterialState.disabled)) {
-                                              return Color.fromRGBO(
-                                                  38, 38, 38, 0.4);
-                                            } else {
-                                              return Color(0x9fffffff);
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                      child:
-
-                                          // Text('글쓰기',
-                                          //     textAlign: TextAlign.end,
-                                          //     overflow: TextOverflow.ellipsis)
-
-                                          Container(
-                                              child: Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: Text('글쓰기',
-                                            // textAlign: TextAlign.end,
-                                            overflow: TextOverflow.ellipsis),
-                                      )),
-                                    ),
-                                  ],
-                                )),
-                            // AppSpacers.width70,
                           ],
                         ),
                       ],
@@ -217,11 +154,6 @@ class PostMainViewState extends State<PostMainView> {
                                     height: MediaQuery.of(context).size.height *
                                         0.3),
                                 Text('게시글이 존재하지 않습니다.'),
-                                /* CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            AppColors.primary,
-                          ),
-                        ),*/
                                 SizedBox(height: 40)
                               ],
                             ));
@@ -271,8 +203,6 @@ class PostMainViewState extends State<PostMainView> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: const [
-                              // AppSpacers.height80,
-                              // AppSpacers.height80,
                               CircularProgressIndicator(
                                 valueColor: AlwaysStoppedAnimation<Color>(
                                   AppColors.primary,
@@ -301,23 +231,11 @@ class PostMainViewState extends State<PostMainView> {
         ));
   }
 
-  void onSelectCell(Post? post) {
-    // _rootNavi.push((MaterialPageRoute(
-    //     builder: (context) => Provider?.value(
-    //       value: _rootNavi,
-    //       builder: (context, child) {
-    //         return MultiBlocProvider(
-    //           providers: [
-    //           ],
-    //           child: CommunityReaderScreen(post!),
-    //         );
-    //       },
-    //     ))));
-
+  void onSelectCell(Post post) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PostReadScreen(post!),
+        builder: (context) => PostReadScreen(post),
       ),
     );
   }

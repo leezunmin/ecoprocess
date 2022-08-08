@@ -23,15 +23,7 @@ class _ProfileNavigator extends State<ProfileNavigator> {
         return MaterialPageRoute(
             settings: settings,
             builder: (BuildContext context) {
-              /*
-              switch (settings.name) {
-                case '/':
-                  return Books1();
-                case '/books2':
-                  return Books2();
-              }*/
-
-              return ProfileView();
+              return OpenContainerTransformDemo();
             });
       },
     );

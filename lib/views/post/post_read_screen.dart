@@ -1,12 +1,3 @@
-// import 'package:application/blocs/bloc_interface.dart';
-// import 'package:application/blocs/blocs.dart';
-// import 'package:application/blocs/validate_mixin.dart';
-// import 'package:application/generated/assets.gen.dart';
-// import 'package:application/models/enums/models.dart';
-// import 'package:application/services/auth/auth_state_service.dart';
-// import 'package:application/services/services.dart';
-// import 'package:application/styles/styles.dart';
-// import 'package:application/views/views.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +10,8 @@ import '../../routes/navi_repository.dart';
 import '../../style/colors.dart';
 import '../../style/tokens.dart';
 import 'package:get/get.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+
 
 class PostReadScreen extends StatefulWidget {
   static const routeName = '/read';
@@ -32,42 +25,23 @@ class PostReadScreen extends StatefulWidget {
 
 class _PostReadScreenState extends State<PostReadScreen> {
   _PostReadScreenState(this.post);
-
-  late Post post;
-  late final NavigatorState _rootNavi;
-  final bool voteAdded = false;
-  // AppPostHeaderEnum _currentHeader = AppPostHeaderEnum.unknown;
-
+  final Post post;
   late final PostBloc _getPostBloc;
-  /*late final ImageBloc _imgBloc;
-  late final VoteBloc _voteBloc;*/
-
-  final imgProgress = BehaviorSubject<bool>();
 
   @override
   void initState() {
     super.initState();
 
-    // _rootNavi = context.read<NavigationService>().rootKey.currentState!;
-
-    _rootNavi = context.read<NaviRepository>().mainKey.currentState!;
-
     _getPostBloc = BlocProvider.of<PostBloc>(context);
-    // _getBloc.postBlocTitleSub.sink.add(titleEditingController!);
-    // _getBloc.postBlocContentSub.sink.add(contentEditingController!);
-
-    imgProgress.sink.add(false);
   }
 
   @override
   void dispose() {
-    imgProgress.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    print('포스트 값 >> ' + post.title);
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -83,8 +57,9 @@ class _PostReadScreenState extends State<PostReadScreen> {
           actions: [
             GetBuilder<PostController>(builder: (_) {
               return Container(
-                  margin: EdgeInsets.only(top: 14, bottom: 14, right: 20),
-                  padding: EdgeInsets.only(bottom: 2),
+                  // margin: EdgeInsets.only(top: 14, bottom: 14, right: 20),
+                  margin: EdgeInsets.only(top: 6, bottom: 6, right: 6),
+                  // padding: EdgeInsets.only(bottom: 2),
                   decoration: BoxDecoration(
                       color: Colors.lightBlue,
                       borderRadius: BorderRadius.circular(10)),
@@ -92,16 +67,31 @@ class _PostReadScreenState extends State<PostReadScreen> {
                       onPressed: () async {
                         if (_.isUsersId == post.writer) {
                           _getPostBloc.add(RemovePostEvent(uid: post.uid!));
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            content: Text('삭제되었습니다.'),
+                            duration: Duration(seconds: 1),
+                          ));
                           Navigator.of(context).pushNamed('/board');
+                        }else {
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            content: Text('본인 글만 삭제가능합니다.'),
+                            duration: Duration(seconds: 1),
+                          ));
                         }
                       },
                       child: _.isUsersId == post.writer
-                          ? Text("삭제",
-                              style: theme.textTheme.subtitle1!
-                                  .copyWith(color: AppColors.white))
-                          : Text("삭제",
-                              style: theme.textTheme.subtitle1!
-                                  .copyWith(color: AppColors.black12))));
+                    ? AutoSizeText(
+                    '삭제',
+                    style: TextStyle(fontSize: 20, color: AppColors.white),
+                    maxLines: 1,
+                  )
+                          :
+                      AutoSizeText(
+                        '삭제',
+                        style: TextStyle(fontSize: 20, color: AppColors.black12),
+                        maxLines: 1,
+                      )
+                  ));
             })
           ],
         ),

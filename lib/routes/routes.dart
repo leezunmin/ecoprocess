@@ -12,23 +12,16 @@ class Routes {
 
   static const String home = '/home';
   static const String app = '/app';
-  static const String detail = '/detail';
   static const String main = '/main';
   static const String board = '/board';
   static const String write = '/write';
   static const String login = '/login';
 
 
-
   static final routes = <String, WidgetBuilder>{
     // home: (BuildContext context) => HomeScreen(),
-    app : (BuildContext context) => MyApp(),
     login: (BuildContext context) => SignInDemo(),
 
-    // detail: (BuildContext context) {
-    //   final args = ModalRoute.of(context)!.settings.arguments as String;
-    //   return DetailPage(args);
-    // },
     main: (BuildContext context) {
       final args = ModalRoute.of(context)!.settings.arguments as String;
       return MainView(title: "kkk");

@@ -4,8 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
-
-import '../routes/chat_navi.dart';
+// import '../routes/chat_navi.dart';
 
 class MainView extends StatefulWidget {
   MainView({Key? key, required this.title}) : super(key: key);
@@ -58,7 +57,7 @@ class _MainViewState extends State<MainView>
               unselectedFontSize: 14,
               currentIndex: screenIndex, //현재 선택된 Index
               onTap: (int index) {
-                print('온탭 인덱스 >> ${index}');
+                print('onTap index >> ${index}');
                 setState(() {
                   screenIndex = index;
                 });
@@ -92,7 +91,8 @@ class _MainViewState extends State<MainView>
                 children: <Widget>[
                   ProfileNavigator(),
                   PostNavigator(),
-                  ChatNavigator(),
+                  ProfileNavigator(),
+                  // ChatNavigator(),
                   // TodayGraphNavigator(),
                   // SajooNavigator(),
                   // HoroscopeNavigator(),
@@ -101,43 +101,43 @@ class _MainViewState extends State<MainView>
             )));
   }
 
-  Future<bool> onWillPop() async {
-    print('온 윌 팝');
-    final DateTime currentTime = DateTime.now();
-
-    //Statement 1 Or statement2
-    bool backButton = backbuttonpressedTime == null ||
-        currentTime.difference(backbuttonpressedTime) > Duration(seconds: 3);
-
-    if (backButton) {
-      backbuttonpressedTime = currentTime;
-
-      // ScaffoldMessenger.of(context).hideCurrentSnackBar();
-      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      //   content: Text('뒤로갈거냐.'),
-      //   duration: Duration(seconds: 1),
-      // ));
-
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text("정말로 끝낼꺼야?"),
-          actions: <Widget>[
-            FlatButton(
-              child: Text("그럴꺼야"),
-              onPressed: () => Navigator.pop(context, true),
-            ),
-            FlatButton(
-              child: Text("아뉘야"),
-              onPressed: () => Navigator.pop(context, false),
-            ),
-          ],
-        ),
-      );
-    }
-    return true;
-    SystemNavigator.pop();
-  }
+  // Future<bool> onWillPop() async {
+  //   print('onWillPop');
+  //   final DateTime currentTime = DateTime.now();
+  //
+  //   //Statement 1 Or statement2
+  //   bool backButton = backbuttonpressedTime == null ||
+  //       currentTime.difference(backbuttonpressedTime) > Duration(seconds: 3);
+  //
+  //   if (backButton) {
+  //     backbuttonpressedTime = currentTime;
+  //
+  //     // ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  //     // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //     //   content: Text('뒤로갈거냐.'),
+  //     //   duration: Duration(seconds: 1),
+  //     // ));
+  //
+  //     showDialog(
+  //       context: context,
+  //       builder: (context) => AlertDialog(
+  //         title: Text("정말로 끝낼꺼야?"),
+  //         actions: <Widget>[
+  //           FlatButton(
+  //             child: Text("그럴꺼야"),
+  //             onPressed: () => Navigator.pop(context, true),
+  //           ),
+  //           FlatButton(
+  //             child: Text("아뉘야"),
+  //             onPressed: () => Navigator.pop(context, false),
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  //   }
+  //   return true;
+  //   SystemNavigator.pop();
+  // }
 
   Future<bool> _onBackPressed() async {
     showDialog(

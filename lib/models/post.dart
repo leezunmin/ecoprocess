@@ -42,25 +42,4 @@ class Post {
 
     };
   }
-
-  /*factory Post.fromJson(Map<String, dynamic> map) {
-    final json = convertToJson(map);
-    final rc = Post(
-      m_id: json['m_id'].stringValue,
-      // isCreatedAt: json['isCreatedAt'],
-    );
-
-    var index = 0;
-    // while (true) {
-    //   final key = "$index";
-    //   if (json.exists(key)) {
-    //     rc.list.add(Post.fromJson(json[key].mapObjectValue));
-    //     index++;
-    //   } else {
-    //     break;
-    //   }
-    // }
-
-    return rc;
-  }*/
 }

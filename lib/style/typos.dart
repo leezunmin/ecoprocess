@@ -55,77 +55,8 @@ final appSimpleTextTheme = TextTheme(
       color: AppColors.gray[40]),
 );
 
-// class DesignCourseAppTheme {
+
 class AppTypos {
   AppTypos._();
-
-  //BeMy
-  /*static const TextStyle notoMedium = TextStyle(
-    // Caption -> caption
-    //fontFamily: 'NotoSansKR',
-    fontFamily: 'NotoSansKR-Medium',
-    fontWeight: FontWeight.w500,
-    fontSize: 22,
-    letterSpacing: -1.5,
-    // color: lightText, // was li
-    color: Color(0xff374553)
-  );*/
-
-  /*static const TextStyle noto_Medium = TextStyle(
-    fontFamily: FontFamily.notoSansKRMedium,
-    fontWeight: FontWeight.w500,
-    fontSize: 14,
-    letterSpacing: -1,
-    color: AppColors.nt_medium, // was li
-    //color: Color(0xff374553)
-  );
-
-  static const TextStyle noto_light = TextStyle(
-    fontFamily: FontFamily.notoSansKRLight,
-    fontWeight: FontWeight.w300,
-    fontSize: 14,
-    letterSpacing: -1,
-    color: AppColors.nt_light, // was li
-    //color: Color(0xff374553)
-  );
-
-  static const TextStyle noto_regular = TextStyle(
-    fontFamily: FontFamily.notoSansKRRegular,
-    fontWeight: FontWeight.w400,
-    fontSize: 14,
-    letterSpacing: -1,
-    // color: lightText, // was li
-    //color: Color(0xff374553)
-  );
-
-// Montserrat
-
-  static const TextStyle mont_medium = TextStyle(
-    fontFamily: FontFamily.montserratMedium,
-    fontWeight: FontWeight.w500,
-    fontSize: 14,
-    // letterSpacing: -1,
-    color: AppColors.lightGrey, // was li
-    //color: Color(0xff374553)
-  );
-
-  static const TextStyle mont_regular = TextStyle(
-      fontFamily: FontFamily.montserratRegular,
-      fontWeight: FontWeight.w500,
-      fontSize: 14,
-      // letterSpacing: -1,
-      // color: lightGrey, // was li
-      color: Color(0xff646F7C));*/
-
-/* static const TextStyle bemyNoto = TextStyle(
-    // Caption -> caption
-      fontFamily: 'NotoSansKR-Medium',
-      fontWeight: FontWeight.w400,
-      fontSize: 22,
-      letterSpacing: 0.0,
-      // color: lightText, // was li
-      color: Color(0xff374553),
-      fontStyle:
-  );*/
 
 }

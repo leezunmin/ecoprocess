@@ -1,25 +1,15 @@
-// import 'package:application/blocs/bloc_interface.dart';
-// import 'package:application/blocs/blocs.dart';
-// import 'package:application/blocs/validate_mixin.dart';
-// import 'package:application/generated/assets.gen.dart';
-// import 'package:application/models/enums/models.dart';
-// import 'package:application/services/auth/auth_state_service.dart';
-// import 'package:application/services/services.dart';
-// import 'package:application/styles/styles.dart';
-// import 'package:application/views/views.dart';
 
 import 'package:eco_process/blocs/user_repository/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
-import 'package:rxdart/rxdart.dart';
 import '../../blocs/post/bloc.dart';
 import '../../blocs/post_controller.dart';
 import '../../models/post.dart';
-import '../../routes/navi_repository.dart';
+import '../../routes/routes.dart';
 import '../../style/colors.dart';
 import '../../style/tokens.dart';
 import 'package:get/get.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class PostWriteScreen extends StatefulWidget {
   static const routeName = '/write';
@@ -30,40 +20,23 @@ class PostWriteScreen extends StatefulWidget {
   _PostWriteScreenState createState() => _PostWriteScreenState();
 }
 
-// class _CommunityWriteScreenState extends State<CommunityWriteScreen> with AppStatefulViewMixin, ValidatorMixin, BlocInterface {
-
 class _PostWriteScreenState extends State<PostWriteScreen> {
-  final TextEditingController? titleEditingController = TextEditingController();
-  final TextEditingController? contentEditingController =
-      TextEditingController();
-
-  late final NavigatorState _rootNavi;
-  final bool voteAdded = false;
-  // AppPostHeaderEnum _currentHeader = AppPostHeaderEnum.unknown;
-
+  final TextEditingController titleEditingController = TextEditingController();
+  final TextEditingController contentEditingController = TextEditingController();
   late final PostBloc _getPostBloc;
   late final UserRepositoryBloc _getUserBloc;
-  final String user = "손님";
   final _postController = Get.find<PostController>();
 
   @override
   void initState() {
     super.initState();
-
-    // _rootNavi = context.read<NavigationService>().rootKey.currentState!;
-
-    _rootNavi = context.read<NaviRepository>().mainKey.currentState!;
+    print('인잇');
     _getPostBloc = BlocProvider.of<PostBloc>(context);
     _getUserBloc = BlocProvider.of<UserRepositoryBloc>(context);
-
+    _postController.titleInputSub.sink.add(false);
+    _postController.contentInputSub.sink.add(false);
   }
 
-  @override
-  void dispose() {
-    titleEditingController!.dispose();
-    contentEditingController!.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,37 +56,52 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
           actions: [
             GetBuilder<PostController>(builder: (_) {
               return Container(
-                  // width: 65,
-                  // height: 30,
-                  margin: EdgeInsets.only(top: 14, bottom: 14, right: 20),
-                  padding: EdgeInsets.only(bottom: 2),
+                  margin: EdgeInsets.only(top: 6, bottom: 6, right: 6),
                   decoration: BoxDecoration(
                       color:
                       Colors.lightBlue,
                       borderRadius: BorderRadius.circular(10)),
-                  child: TextButton(
-                      onPressed: () async {
-                        print('글 제목' + titleEditingController!.text);
+                  child:
+                  Row(
+                    children: [
 
-                        _getPostBloc.add(AddPostEvent(
-                            post: Post(writer: _getUserBloc.loginId, isCreatedAt: '', title: titleEditingController!.text,
-                                content: contentEditingController!.text, deleteFlag: 'N')));
-                        // _rootNavi.pushNamed(Routes.board, arguments: '메인뷰');
+                      _.isUserWritedText == true
+                          ?
+                      TextButton(
+                          onPressed: () async {
+                            _getPostBloc.add(AddPostEvent(
+                                post: Post(writer: _getUserBloc.blocLoginUser, isCreatedAt: '', title: titleEditingController!.text,
+                                    content: contentEditingController!.text, deleteFlag: 'N')));
 
-                        debugPrint('사용자 입력 트루');
+                            debugPrint('사용자 입력 트루');
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('글 작성이 완료되었습니다')));
-
-                        Navigator.of(context).pushNamed('/board');
-                      },
-                      child: _.isUserWritedText == true
-                          ? Text("등록",
-                              style: theme.textTheme.subtitle1!
-                                  .copyWith(color: AppColors.white))
-                          : Text("등록",
-                              style: theme.textTheme.subtitle1!
-                                  .copyWith(color: AppColors.chipBlue))));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('글 작성이 완료되었습니다')));
+                            // Navigator.of(context).pushNamed('/board');
+                            Navigator.of(context).pushNamedAndRemoveUntil(Routes.board, (route) => false);
+                          },
+                          child:
+                          AutoSizeText(
+                            '등록',
+                            style: TextStyle(fontSize: 20, color: AppColors.white),
+                            maxLines: 1,
+                          )
+                              ) :
+                      TextButton(
+                          onPressed: () async {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('글 제목과 내용을 모두 입력해주세요')));
+                          },
+                          child:
+                          AutoSizeText(
+                            '등록',
+                            style: TextStyle(fontSize: 20, color: AppColors.chipBlue),
+                            maxLines: 1,
+                          ),
+                      )
+                      ],
+                  )
+                  );
             })
           ],
         ),
@@ -135,14 +123,7 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
                     child: Container(
                         width: 200,
                         padding: AppEdgeInsets.horizontal16,
-                        child: InkWell(
-                          onTap: () {},
-                          child: Container(
-                            child: Row(
-                              children: [],
-                            ),
-                          ),
-                        )),
+                    ),
                   ),
                   Container(
                     padding: AppEdgeInsets.horizontal16,
@@ -168,12 +149,9 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
                       maxLength: 30,
                       maxLines: 1,
                       onChanged: (text) {
-
-                        if (0 < text.trim().length) {
-                          // _getPostBloc.textInputSub.sink.add(true);
+                        if (0 < text.length) {
                           _postController.titleInputSub.sink.add(true);
-                        } else if (text.trim().length == 0) {
-                          // _getPostBloc.textInputSub.sink.add(false);
+                        } else if (text.length == 0) {
                           _postController.titleInputSub.sink.add(false);
                         }
                       },
@@ -213,22 +191,15 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
                           .apply(color: AppColors.text50),
                       onChanged: (text) {
 
-                        if (0 < text.trim().length) {
+                        if (0 < text.length) {
                           _postController.contentInputSub.sink.add(true);
-                        } else if (text.trim().length == 0) {
+                        } else if (text.length == 0) {
                           _postController.contentInputSub.sink.add(false);
                         }
                       },
                     ),
                   ),
                   AppSpacers.height24,
-                  // _blocWidget(boxConstraints),
-
-                  /*imgLoading == true
-                              ? Container(
-                              padding: AppEdgeInsets.bottom32, child: showProgres())
-                              : SizedBox(),*/
-                  // SizedBox(height: 20),
                 ],
               ),
             )));
@@ -236,117 +207,12 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
         ));
   }
 
-  /*_onAddButton(BuildContext context) {
-    final _imgBloc = BlocProvider.of<ImageBloc>(context);
+  @override
+  dispose() async{
+    debugPrint('>>>>> Dispose post_write_screen ');
+    titleEditingController.dispose();
+    contentEditingController.dispose();
+    super.dispose();
+  }
 
-    showModalBottomSheet(
-        backgroundColor: AppColors.transparent,
-        context: context,
-        useRootNavigator: true,
-        builder: (BuildContext context) {
-          return PhotoSelectorBottomSheet(
-            onPick: (file) async {
-              l.info(this, 'file >>> ' + file.toString());
-              imgProgress.sink.add(true);
-              if (file != null) {
-                _imgBloc.add(GetLoadImage(file));
-              }
-            },
-            onPhotoPicker: () {},
-          );
-        });
-  }*/
-
-  /*Widget _blocWidget(BoxConstraints viewportConstraints) {
-    final _imgBloc = BlocProvider.of<ImageBloc>(context);
-    final voteBlocState = BlocProvider.of<VoteBloc>(context).state;
-
-    return Column(
-      children: [
-        // 상태에 대해 1회만 작동함, 라우팅으로 사용
-        BlocListener<PostBloc, PostState>(
-          listenWhen: (context, state) {
-            return state is Loaded;
-          },
-          listener: (context, state) {
-            if (state is Loaded) {
-              if (state.isValidated == true) {
-                print('state.isValidated == true ');
-                // 라우팅 임시로 막음
-                _rootNavi.pop();
-              } else if (state.isValidated == true &&
-                  state.isIncludeVote == true) {
-                print('state.isIncludeVote == true ');
-                // 라우팅 임시로 막음
-                _rootNavi.pop();
-                _rootNavi.pop();
-              }
-            }
-          },
-          child: Container(),
-        ),
-
-        BlocBuilder<ImageBloc, ImageBlocState>(
-          // 사진 지웠을때랑 사진 첨부했을때 빌드됨
-            buildWhen: (previous, current) =>
-            (current is ImagePickerSuccess || current is ImagePickerEmpty),
-            builder: (BuildContext context, ImageBlocState state) {
-              print('Community Write ImageBlocState >> ' + state.toString());
-
-              if (state is ImagePickerEmpty) {
-                l.info(this, 'BlocBuilder state is ImagePickerEmpty ');
-                return Container();
-              } else if (state is ImagePickerLoading) {
-                l.info(this, 'ImagePickerLoading');
-                return Center(
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        AppColors.primary,
-                      ),
-                    ));
-              }
-
-
-              else if (state is ImagePickerSuccess) {
-                // 이미지 첨부가 새로 되면 첨부여부 초기화
-                imgProgress.sink.add(false);
-
-                return Container(
-                  width: viewportConstraints.maxWidth - 30,
-                  height: viewportConstraints.maxHeight - 300,
-                  decoration: BoxDecoration(
-                      borderRadius: AppBorderRadius.circular8,
-                      border: Border.all(width: 1, color: AppColors.gray[030]!),
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: CachedNetworkImageProvider(
-                            state.imgDownload.toString()),
-                      )),
-                  child: Align(
-                    alignment: FractionalOffset(0.99, 0.01),
-                    //사진 삭제 아이콘
-                    child: IconButton(
-                      icon: ImageIcon(Assets.images.icCancelSolidBl24,
-                          color: AppColors.gray[60]),
-                      onPressed: () {
-                        _imgBloc.add(
-                            CancleImage(deleteImgPath: state.deleteImgPath));
-                      },
-                    ),
-                  ),
-                );
-              }
-              return SizedBox();
-            }),
-
-        SizedBox(height: 50),
-
-        // voteBlocState.runtimeType == EditingVoteListState
-        //     ? VoteBlocEditor()
-        //     : SizedBox(),
-
-        SizedBox(height: 50),
-      ],
-    );
-  }*/
 }

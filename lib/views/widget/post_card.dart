@@ -35,6 +35,7 @@ class PostCard extends StatelessWidget {
       final screenHeight = constraints.maxHeight;
       return Container(
         // color: Colors.amber,
+        // width: screenWidth * 0.8,
         margin: AppEdgeInsets.vertical8.add(AppEdgeInsets.horizontal16),
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,

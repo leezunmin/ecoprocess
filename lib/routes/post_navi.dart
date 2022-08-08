@@ -15,8 +15,6 @@ class _PostNavigator extends State<PostNavigator> {
 
   GlobalKey<NavigatorState> _userInfoNaviKey = GlobalKey<NavigatorState>();
 
-  late final NavigatorState _rootNavi;
-
   @override
   Widget build(BuildContext context) {
     print('포스트 네비게이터 빌드 >> ');
@@ -32,7 +30,5 @@ class _PostNavigator extends State<PostNavigator> {
             });
       },
     );
-
-    // return PostMainView();
   }
 }
