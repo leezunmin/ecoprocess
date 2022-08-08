@@ -1,7 +1,3 @@
-// abstract class UserRepositoryEvent {}
-//
-// class InitEvent extends UserRepositoryEvent {}
-//
 
 part of 'bloc.dart';
 

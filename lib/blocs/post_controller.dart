@@ -12,9 +12,6 @@ class PostController extends GetxController {
   // 사용자 제목, 내용 입력 stream 결합 관찰
   late final validateSub = CombineLatestStream.combine2(
       titleInputSub.stream, contentInputSub.stream, (bool a, bool b) {
-        print('제목 validate ' + a.toString());
-        print('내용 validate ' + b.toString());
-
     if(a == true && b == true) {
       return true;
     }

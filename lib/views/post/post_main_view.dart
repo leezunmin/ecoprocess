@@ -1,21 +1,16 @@
-import 'package:eco_process/main.dart';
-import 'package:eco_process/views/login.dart';
+
 import 'package:eco_process/views/post/post_read_screen.dart';
 import 'package:eco_process/views/post/post_write_screen.dart';
-// import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
-
 import '../../blocs/post/bloc.dart';
 import '../../blocs/user_repository/bloc.dart';
 import '../../models/post.dart';
-import '../../routes/navi_repository.dart';
-import '../../routes/routes.dart';
 import '../../style/colors.dart';
 import '../../style/tokens.dart';
 import '../widget/post_card.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+
 
 class PostMainView extends StatefulWidget {
   static const routeName = '/board';
@@ -36,7 +31,6 @@ class PostMainViewState extends State<PostMainView> {
     print('PostMainViewState initState ');
     _getPostBloc = BlocProvider.of<PostBloc>(context);
     _getUserBloc = BlocProvider.of<UserRepositoryBloc>(context);
-
     getImgUrl();
   }
 
@@ -76,7 +70,7 @@ class PostMainViewState extends State<PostMainView> {
                           children: [
                             // AppSpacers.width18,
                             Container(
-                              width: screenWidth * 0.3,
+                              // width: screenWidth * 0.3,
                               child: BlocBuilder<UserRepositoryBloc,
                                       UserRepositoryState>(
                                   buildWhen: (previous, current) =>

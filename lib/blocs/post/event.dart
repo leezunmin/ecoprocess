@@ -11,14 +11,20 @@ class InitialOnce extends PostEvent {}
 class Fetch extends PostEvent {}
 
 class AddPostEvent extends PostEvent {
-  final Post post;
+  final String writer;
+  final String isCreatedAt;
+  final String title;
+  final String content;
 
   AddPostEvent({
-    required this.post,
+    required this.writer,
+    required this.isCreatedAt,
+    required this.title,
+    required this.content
   });
 
   @override
-  List<Object> get props => [post];
+  List<Object> get props => [writer, isCreatedAt, title, content];
 }
 
 class RemovePostEvent extends PostEvent {

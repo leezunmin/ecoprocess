@@ -24,7 +24,7 @@ void main() async {
     ),
   );
 
-  final FireStoreDB repository = FireStoreDB();
+  final FireStoreDB _firestore = FireStoreDB();
   Get.put(PostController());
 
   runApp(
@@ -39,20 +39,14 @@ void main() async {
             lazy: false,
             create: (BuildContext context) => PostBloc(
                 initialState: const GetInit(postList: []),
-                repository: repository)),
+                fireStoreDB: _firestore)),
         BlocProvider<UserRepositoryBloc>(
             lazy: false,
             create: (BuildContext context) => UserRepositoryBloc(initialState: UserInitStatus())),
       ],
       child: const MyApp(),
     ),
-    // MultiBlocProvider(
-    //   providers: [
-    //     BlocProvider<PostBloc>(
-    //         lazy: false, create: (BuildContext context) => PostBloc()),
-    //   ],
-    //   child: const MyApp(),
-    // )
+
   );
 }
 
@@ -64,13 +58,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final _rootNavi = context.read<NaviRepository>();
 
-    // return MaterialApp(
-    //   title: 'Flutter Demo',
-    //   theme: ThemeData(
-    //     primarySwatch: Colors.blue,
-    //   ),
-    //   home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    // );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: '로그인',

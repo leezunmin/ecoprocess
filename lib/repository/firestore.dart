@@ -1,11 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../models/post.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 
 class FireStoreDB {
   late final FirebaseFirestore _firestore;
-  // final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   FireStoreDB() {
     _firestore = FirebaseFirestore.instance;
@@ -28,14 +25,8 @@ class FireStoreDB {
     }
   }
 
-  Future<List<DocumentSnapshot<Map<String, dynamic>>>> fetchFirstPost(
-      // String? requiredFilter,
-      {String? filter,
-      String? header,
-      String? ownerId}) async {
-    // requiredFilter = switchFilter(requiredFilter!);
+  Future<List<DocumentSnapshot<Map<String, dynamic>>>> doFetchPost() async {
     List<QueryDocumentSnapshot<Map<String, dynamic>>> docsList;
-
     docsList = [];
 
     try {
@@ -47,10 +38,9 @@ class FireStoreDB {
               .get())
           .docs;
     } catch (e) {
-      print('파베 데이터 가져오기 캐치 에러 11 ' + e.runtimeType.toString());
-      print('파베 데이터 가져오기 캐치 에러 22 ' + e.toString());
+      print('ErrorType : ' + e.runtimeType.toString());
+      print('e ' + e.toString());
     }
-
     return docsList;
   }
 

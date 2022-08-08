@@ -25,8 +25,6 @@ class UserRepositoryBloc
     debugPrint('블록 UserRepositoryBloc 생성>>>');
 
     on<Login>((event, emit) async {
-      // final result = await getFetchFirst();
-
       debugPrint('로긴 정보 >> ' + event.currentUser!.email);
       _postController.isUsersId = event.currentUser!.email;
       currentUser = event.currentUser;

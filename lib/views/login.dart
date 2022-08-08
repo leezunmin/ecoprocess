@@ -9,6 +9,10 @@ import '../routes/routes.dart';
 import '../routes/navi_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../style/colors.dart';
+
+
+
 GoogleSignIn _googleSignIn = GoogleSignIn(
   // Optional clientId
   clientId: '29092948700-eoos5oldkh61np1607m4cg3rrmv3str2.apps.googleusercontent.com',
@@ -162,7 +166,38 @@ class SignInDemoState extends State<SignInDemo> {
       return Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          const Text('로그인이 필요합니다. 999 확장현상 수정'),
+
+          // const Text(
+          //     '로그인이 필요합니다.'
+          // '\n'
+          // '\n'
+          //         '< Google에서 확인하지 않은 앱 > 메세지 시에 하단의 고급 글자를 클릭하여'
+          //     'eco rich process google sign(으)로 이동(안전하지 않음) 을 클릭하여 계속하여 진행하시면 됩니다.',
+          // ),
+
+
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+
+                const Text(
+                  '로그인이 필요합니다.'
+                      '\n'
+                      '\n'
+                      '< Google에서 확인하지 않은 앱 > 메세지 시에 구글로긴창 하단의 <고급> 글자를 클릭하여'
+                      '\n'
+                      '\n'
+                      'eco rich process google sign(으)로 이동(안전하지 않음) 을 클릭하여 계속하여 진행하시면 됩니다.',
+                  style: TextStyle(fontSize: 20, color: AppColors.dark_grey),
+                ),
+
+                const SizedBox(height: 10),
+
+              ],
+            ),
+          ),
           ElevatedButton(
             onPressed: _handleSignIn,
             child: const Text('SIGN IN'),
@@ -176,7 +211,7 @@ class SignInDemoState extends State<SignInDemo> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Google Sign In'),
+          title: const Text('에코앤리치 과제 첫페이지'),
         ),
         body: ConstrainedBox(
           constraints: const BoxConstraints.expand(),

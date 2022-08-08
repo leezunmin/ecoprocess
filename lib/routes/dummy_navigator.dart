@@ -4,25 +4,27 @@ import 'package:eco_process/views/profile_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../views/dummy_view.dart';
 
-class ProfileNavigator extends StatefulWidget {
+
+class DummyNavigator extends StatefulWidget {
   @override
-  _ProfileNavigator createState() => _ProfileNavigator();
+  _DummyNavigator createState() => _DummyNavigator();
 }
 
-class _ProfileNavigator extends State<ProfileNavigator> {
+class _DummyNavigator extends State<DummyNavigator> {
 
-  GlobalKey<NavigatorState> _profileNavi = GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState> _dummyNaviKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
     return Navigator(
-      key : _profileNavi,
+      key : _dummyNaviKey,
       onGenerateRoute: (RouteSettings settings) {
         return MaterialPageRoute(
             settings: settings,
             builder: (BuildContext context) {
-              return OpenContainerTransformDemo();
+              return DummyView();
             });
       },
     );

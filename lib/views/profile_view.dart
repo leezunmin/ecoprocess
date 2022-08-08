@@ -1,21 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
-import 'package:flutter/material.dart';
 
-const double _fabDimension = 56.0;
 
 const String _profile = '안녕하세요 이번에 에코앤리치에 지원하게 된 이준민입니다.'
     '\n'
     '2019년경 다소 늦은 나이로 직업을 한번 전환하여 개발자를 하게된 케이스이며, 그이전에는 중고관련된 제품을 매입 및 인터넷 스토어에 판매 등의'
-    '일을 2~3년정도간 하였습니다(의류 및 pc등). '
+    '일을 2~3년정도간 하였습니다(의류 및 중고pc부품 등). '
     '\n'
     '하지만 저의 성향과 다소 맞지 않는다는 느낌을 받게되었고, '
     '때마침 개발자 친구에게 조언을 구하여 개발자로 전향하게되었습니다.'
     '\n'
     '그래미엄이라는 판교의 작은 스타트업에서 플러터 개발자로 근무한 경험이 있습니다. 당시 7년차 10년차 시니어 풀스택 개발자들과 원격으로 협업하였습니다.'
     '꽤 규모가 큰 커뮤니티성 앱이었으며, 여러가지 앱개발에 관해 배울수있는 좋은 경험이었습니다.'
-    '하지만 수익악화로 인해 해당 사업은 더이상 진행되지 않게 되었으며, 그로인하여 실업급여를 수급하며 새로운 구직을 준비하고 있습니다.';
+    '하지만 수익악화로 인해 해당 사업은 더이상 진행되지 않게 되었으며, 그로인하여 실업급여를 수급하며 새로운 구직을 준비하고 있습니다. '
+    '\n'
+    '총 개발 경력은 실무 2년가량이며 개인개발경험은 더 있습니다.';
 
 const String _project =
 '\n'
@@ -56,26 +56,12 @@ class _OpenContainerTransformDemoState
     extends State<OpenContainerTransformDemo> {
   ContainerTransitionType _transitionType = ContainerTransitionType.fade;
 
-  void _showMarkedAsDoneSnackbar(bool? isMarkedAsDone) {
-    if (isMarkedAsDone ?? false)
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Marked as done!'),
-      ));
-  }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Container transform'),
+        title: const Text('페이지 만들기 과제 내역'),
         actions: <Widget>[
-          // IconButton(
-          //   icon: const Icon(Icons.settings),
-          //   onPressed: () {
-          //     _showSettingsBottomModalSheet(context);
-          //   },
-          // ),
         ],
       ),
       body: ListView(
@@ -86,17 +72,21 @@ class _OpenContainerTransformDemoState
             closedBuilder: (BuildContext _, VoidCallback openContainer) {
               return _ExampleCard(openContainer: openContainer);
             },
-            onClosed: _showMarkedAsDoneSnackbar,
+            // onClosed: _showMarkedAsDoneSnackbar,
             widgetContent: _profile,
+            imgFile: 'assets/desk.jpg',
           ),
+
+          // 과제 작업이력
           const SizedBox(height: 16.0),
           _OpenContainerWrapper(
             transitionType: _transitionType,
             closedBuilder: (BuildContext _, VoidCallback openContainer) {
               return _ExampleSingleTile(openContainer: openContainer);
             },
-            onClosed: _showMarkedAsDoneSnackbar,
+            // onClosed: _showMarkedAsDoneSnackbar,
             widgetContent: _project,
+            imgFile: 'assets/desk.jpg',
           ),
           const SizedBox(height: 16.0),
           Row(
@@ -104,16 +94,18 @@ class _OpenContainerTransformDemoState
               Expanded(
                 child: _OpenContainerWrapper(
                   transitionType: _transitionType,
+
                   closedBuilder: (BuildContext _, VoidCallback openContainer) {
                     return _SmallerCard(
                       openContainer: openContainer,
                       title: "샘플페이지",
-                      subtitle: 'Secondary text',
+                      subtitle: '내용없음, 샘플사진',
                       imgFile: 'assets/firebase.png',
                     );
                   },
-                  onClosed: _showMarkedAsDoneSnackbar,
+                  // onClosed: _showMarkedAsDoneSnackbar,
                   widgetContent: "빈페이지",
+                  imgFile: 'assets/firebase.png',
                 ),
               ),
               const SizedBox(width: 8.0),
@@ -124,12 +116,13 @@ class _OpenContainerTransformDemoState
                     return _SmallerCard(
                       openContainer: openContainer,
                       title: "판교의 스타트업 근무",
-                      subtitle: 'Secondary text',
+                      subtitle: '사무실 사진입니다',
                       imgFile: 'assets/desk.jpg',
                     );
                   },
-                  onClosed: _showMarkedAsDoneSnackbar,
+                  // onClosed: _showMarkedAsDoneSnackbar,
                   widgetContent: "빈페이지",
+                  imgFile: 'assets/desk.jpg',
                 ),
               ),
             ],
@@ -148,8 +141,9 @@ class _OpenContainerTransformDemoState
                       imgFile: 'assets/academy.jpg',
                     );
                   },
-                  onClosed: _showMarkedAsDoneSnackbar,
+                  // onClosed: _showMarkedAsDoneSnackbar,
                   widgetContent: "KH정보교육원에서 JAVA 웹개발 과정을 수료했으며, 조장 역할을 맡아 프로젝트를 원활히 완수한 내역이 있습니다.",
+                  imgFile: 'assets/academy.jpg',
                 ),
               ),
               const SizedBox(width: 8.0),
@@ -160,12 +154,13 @@ class _OpenContainerTransformDemoState
                     return _SmallerCard(
                       openContainer: openContainer,
                       title: '판교',
-                      subtitle: 'Secondary',
+                      subtitle: '사무실사진',
                       imgFile: 'assets/office.jpg',
                     );
                   },
-                  onClosed: _showMarkedAsDoneSnackbar,
-                  widgetContent: "빈페이지",
+                  // onClosed: _showMarkedAsDoneSnackbar,
+                  widgetContent: "판교의 스타트업 재직 당시 사무실 모습입니다. 외주 시니어 개발자와 원격으로 협업하여 작업하였습니다.",
+                  imgFile: 'assets/office.jpg',
                 ),
               ),
               const SizedBox(width: 8.0),
@@ -175,13 +170,16 @@ class _OpenContainerTransformDemoState
                   closedBuilder: (BuildContext _, VoidCallback openContainer) {
                     return _SmallerCard(
                       openContainer: openContainer,
-                      subtitle: 'Secondary',
+                      subtitle: '재고 추적용 바코드 리더기 앱',
                       title: '산업용 pda 작업',
                       imgFile: 'assets/rfx_pda_3.jpg',
                     );
                   },
-                  onClosed: _showMarkedAsDoneSnackbar,
-                  widgetContent: "빈페이지",
+                  // onClosed: _showMarkedAsDoneSnackbar,
+                  widgetContent: "첫회사에서 java + 자바스크립트 그리드 라이브러리를 사용하여 웹개발을 하였습니다."
+                  "또한 flutter를 이용한 간단한 산업용 pda 어플리케이션 작업을 병행 하였습니다."
+                  '중소기업의 생산부터 출하까지의 제조과정의 이력을 추적하는 간단한 앱을 만들었습니다.',
+                  imgFile: 'assets/rfx_pda_3.jpg',
                 ),
               ),
             ],
@@ -197,23 +195,25 @@ class _OpenContainerWrapper extends StatelessWidget {
   const _OpenContainerWrapper({
     required this.closedBuilder,
     required this.transitionType,
-    required this.onClosed,
+    // required this.onClosed,
     required this.widgetContent,
+    required this.imgFile,
   });
 
   final CloseContainerBuilder closedBuilder;
   final ContainerTransitionType transitionType;
-  final ClosedCallback<bool?> onClosed;
+  // final ClosedCallback<bool?> onClosed;
   final String widgetContent;
+  final String imgFile;
 
   @override
   Widget build(BuildContext context) {
     return OpenContainer<bool>(
       transitionType: transitionType,
       openBuilder: (BuildContext context, VoidCallback _) {
-        return _DetailsPage(content: widgetContent);
+        return _DetailsPage(content: widgetContent, imgFile: imgFile);
       },
-      onClosed: onClosed,
+      // onClosed: onClosed,
       tappable: false,
       closedBuilder: closedBuilder,
     );
@@ -238,21 +238,6 @@ class _ExampleCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
 
-            // Expanded(
-            //   child: Container(
-            //     // width: widgetWidth,
-            //     color: Colors.black12,
-            //     child: Center(
-            //       child: Image.asset(
-            //         // 'assets/placeholder_image.png',
-            //         'assets/dart_flutter.png',
-            //         width: widgetWidth * 0.2,
-            //         height: widgetHeight * 0.3,
-            //       ),
-            //     ),
-            //   ),
-            // ),
-
             Container(
                 color: Colors.white30,
                 height: 150,
@@ -271,11 +256,9 @@ class _ExampleCard extends StatelessWidget {
                   ],
                 )),
 
-
-
             const ListTile(
               title: Text('개발자 이준민을 소개합니다'),
-              subtitle: Text('Secondary text'),
+              // subtitle: Text('Secondary text'),
             ),
             Padding(
               padding: const EdgeInsets.only(
@@ -284,7 +267,7 @@ class _ExampleCard extends StatelessWidget {
                 bottom: 16.0,
               ),
               child: Text(
-                '2019년 국비 교육 java과정을 시작으로 개발자에 입문하게 된 저를 소개합니다.',
+                '간단한 자기소개입니다.',
                 style: Theme.of(context)
                     .textTheme
                     .bodyText2!
@@ -317,8 +300,7 @@ class _SmallerCard extends StatelessWidget {
         builder: (BuildContext context, BoxConstraints boxConstraints) {
       final widgetWidth = boxConstraints.maxWidth;
       final widgetHeight = boxConstraints.maxHeight;
-      print("가로 " + widgetWidth.toString());
-      print("세로 " + widgetHeight.toString());
+
       return _InkWellOverlay(
         openContainer: openContainer,
         height: 225,
@@ -396,23 +378,6 @@ class _ExampleSingleTile extends StatelessWidget {
             ),
           ),
 
-          // Container(
-          //     color: Colors.black12,
-          //     height: height,
-          //     child: Row(
-          //       children: [
-          //         Expanded(
-          //           child: CircleAvatar(
-          //             backgroundColor: Colors.white,
-          //             radius: 30.0,
-          //             child: ClipRRect(
-          //               child: Image.asset('placeholder_image.png'),
-          //               borderRadius: BorderRadius.circular(30.0),
-          //             ),
-          //           ),
-          //         )
-          //       ],
-          //     )),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -462,23 +427,18 @@ class _InkWellOverlay extends StatelessWidget {
 
 class _DetailsPage extends StatelessWidget {
   const _DetailsPage(
-      {this.includeMarkAsDoneButton = true, required this.content});
+      {this.includeMarkAsDoneButton = true, required this.content, required this.imgFile});
 
   final bool includeMarkAsDoneButton;
   final String content;
+  final String imgFile;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Details page'),
+          title: const Text('상세 페이지'),
           actions: <Widget>[
-            // if (includeMarkAsDoneButton)
-            //   IconButton(
-            //     icon: const Icon(Icons.done),
-            //     onPressed: () => Navigator.pop(context, true),
-            //     tooltip: 'Mark as done',
-            //   )
           ],
         ),
         body: LayoutBuilder(
@@ -502,12 +462,10 @@ class _DetailsPage extends StatelessWidget {
                       child:
 
                       Container(
-                        width: screenWidth * 0.3,
                         height: screenHeight * 0.4,
+                        width: screenWidth * 0.3,
                         child: Image.asset(
-                          // 'assets/placeholder_image.png',
-                          // 'assets/Java_Logo.png',
-                          'assets/desk2.jpg',
+                          imgFile,
                           fit: BoxFit.fill,
                         ),
                       )

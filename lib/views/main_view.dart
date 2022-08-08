@@ -1,10 +1,10 @@
 import 'package:eco_process/routes/post_navi.dart';
 import 'package:eco_process/routes/profile_navi.dart';
+import 'package:eco_process/routes/dummy_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
-// import '../routes/chat_navi.dart';
 
 class MainView extends StatefulWidget {
   MainView({Key? key, required this.title}) : super(key: key);
@@ -24,10 +24,7 @@ class _MainViewState extends State<MainView>
   @override
   void initState() {
     super.initState();
-    // initPermission();
-
     _controller = TabController(length: 3, vsync: this); //vsync는 무조건 this
-    print('메인 뷰');
   }
 
   @override
@@ -43,7 +40,6 @@ class _MainViewState extends State<MainView>
     debugPrint('screentWidth >> ' + screentWidth.toString());
 
     return Container(
-        // width: screentWidth,
         child: Scaffold(
             // appBar: AppBar(
             //   title: Text('초기 앱 바'),
@@ -64,7 +60,7 @@ class _MainViewState extends State<MainView>
               },
               items: [
                 BottomNavigationBarItem(
-                  label: "자기소개",
+                  label: "웹페이지 과제",
                   icon: Icon(Icons.announcement),
                 ),
                 BottomNavigationBarItem(
@@ -72,72 +68,23 @@ class _MainViewState extends State<MainView>
                   icon: Icon(Icons.library_books_outlined),
                 ),
                 BottomNavigationBarItem(
-                  label: "추가기능",
+                  label: "Dummy",
                   icon: Icon(Icons.account_circle),
                 ),
-                // BottomNavigationBarItem(
-                //   label: "세팅",
-                //   icon: Icon(Icons.settings_applications),
-                // ),
               ],
             ),
             body: WillPopScope(
-              //  onWillPop: () async => false,
               onWillPop: _onBackPressed,
-              // onWillPop: onWillPop,
-
               child: IndexedStack(
                 index: screenIndex,
                 children: <Widget>[
                   ProfileNavigator(),
                   PostNavigator(),
-                  ProfileNavigator(),
-                  // ChatNavigator(),
-                  // TodayGraphNavigator(),
-                  // SajooNavigator(),
-                  // HoroscopeNavigator(),
+                  DummyNavigator(),
                 ],
               ),
             )));
   }
-
-  // Future<bool> onWillPop() async {
-  //   print('onWillPop');
-  //   final DateTime currentTime = DateTime.now();
-  //
-  //   //Statement 1 Or statement2
-  //   bool backButton = backbuttonpressedTime == null ||
-  //       currentTime.difference(backbuttonpressedTime) > Duration(seconds: 3);
-  //
-  //   if (backButton) {
-  //     backbuttonpressedTime = currentTime;
-  //
-  //     // ScaffoldMessenger.of(context).hideCurrentSnackBar();
-  //     // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //     //   content: Text('뒤로갈거냐.'),
-  //     //   duration: Duration(seconds: 1),
-  //     // ));
-  //
-  //     showDialog(
-  //       context: context,
-  //       builder: (context) => AlertDialog(
-  //         title: Text("정말로 끝낼꺼야?"),
-  //         actions: <Widget>[
-  //           FlatButton(
-  //             child: Text("그럴꺼야"),
-  //             onPressed: () => Navigator.pop(context, true),
-  //           ),
-  //           FlatButton(
-  //             child: Text("아뉘야"),
-  //             onPressed: () => Navigator.pop(context, false),
-  //           ),
-  //         ],
-  //       ),
-  //     );
-  //   }
-  //   return true;
-  //   SystemNavigator.pop();
-  // }
 
   Future<bool> _onBackPressed() async {
     showDialog(
@@ -147,8 +94,6 @@ class _MainViewState extends State<MainView>
         actions: <Widget>[
           FlatButton(
             child: Text("종료"),
-
-            // onPressed: () => Navigator.pop(context, true),
             onPressed: () {
               SystemNavigator.pop();
             },

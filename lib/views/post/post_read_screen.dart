@@ -1,12 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
-import 'package:rxdart/rxdart.dart';
 import '../../blocs/post/bloc.dart';
 import '../../blocs/post_controller.dart';
 import '../../models/post.dart';
-import '../../routes/navi_repository.dart';
 import '../../style/colors.dart';
 import '../../style/tokens.dart';
 import 'package:get/get.dart';

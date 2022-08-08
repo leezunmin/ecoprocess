@@ -69,28 +69,53 @@ class PostCard extends StatelessWidget {
                   ],
                 )),
                 AppSpacers.width4,
+
+                // Container(
+                //   width: screenWidth * 0.3,
+                //   child: Row(
+                //     children: [
+                //       Expanded(
+                //         child: Container(
+                //           width: 64,
+                //           height: 64,
+                //           decoration: BoxDecoration(
+                //               image: DecorationImage(
+                //                 // fit: BoxFit.cover,
+                //                 fit: BoxFit.contain,
+                //                 image: CachedNetworkImageProvider(imgUrl!,
+                //                 maxHeight: 64, maxWidth: 100
+                //                 ),
+                //               ),
+                //               border: Border.all(width: 1, color: AppColors.primary),
+                //               borderRadius: AppBorderRadius.circular48),
+                //         ),
+                //       )
+                //     ],
+                //   ),
+                // ),
+
                 Container(
-                  width: screenWidth * 0.3,
-                  // height: screenHeight * 0.1,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          width: 64,
-                          height: 64,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                // fit: BoxFit.cover,
-                                fit: BoxFit.contain,
-                                image: CachedNetworkImageProvider(imgUrl!),
-                              ),
-                              // border: Border.all(width: 1, color: AppColors.primary),
-                              borderRadius: AppBorderRadius.circular8),
-                        ),
-                      )
-                    ],
-                  ),
+                    width: 100,
+                    height: 64,
+
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 30.0,
+                            child: ClipRRect(
+                              child: Image.asset('assets/avatar_logo.png'),
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                          ),
+                        )
+                      ],
+                    )
                 ),
+
+
+
               ],
             ),
             AppSpacers.height16,

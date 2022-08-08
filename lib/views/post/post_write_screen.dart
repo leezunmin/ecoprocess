@@ -1,4 +1,3 @@
-
 import 'package:eco_process/blocs/user_repository/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +21,8 @@ class PostWriteScreen extends StatefulWidget {
 
 class _PostWriteScreenState extends State<PostWriteScreen> {
   final TextEditingController titleEditingController = TextEditingController();
-  final TextEditingController contentEditingController = TextEditingController();
+  final TextEditingController contentEditingController =
+      TextEditingController();
   late final PostBloc _getPostBloc;
   late final UserRepositoryBloc _getUserBloc;
   final _postController = Get.find<PostController>();
@@ -30,17 +30,15 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
   @override
   void initState() {
     super.initState();
-    print('인잇');
+    debugPrint('init _PostWriteScreenState >>');
     _getPostBloc = BlocProvider.of<PostBloc>(context);
     _getUserBloc = BlocProvider.of<UserRepositoryBloc>(context);
     _postController.titleInputSub.sink.add(false);
     _postController.contentInputSub.sink.add(false);
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -58,50 +56,50 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
               return Container(
                   margin: EdgeInsets.only(top: 6, bottom: 6, right: 6),
                   decoration: BoxDecoration(
-                      color:
-                      Colors.lightBlue,
+                      color: Colors.lightBlue,
                       borderRadius: BorderRadius.circular(10)),
-                  child:
-                  Row(
+                  child: Row(
                     children: [
-
                       _.isUserWritedText == true
-                          ?
-                      TextButton(
-                          onPressed: () async {
-                            _getPostBloc.add(AddPostEvent(
-                                post: Post(writer: _getUserBloc.blocLoginUser, isCreatedAt: '', title: titleEditingController!.text,
-                                    content: contentEditingController!.text, deleteFlag: 'N')));
+                          ? TextButton(
+                              onPressed: () async {
+                                _getPostBloc.add(AddPostEvent(
+                                  writer: _getUserBloc.blocLoginUser,
+                                  isCreatedAt: DateTime.now().toString(),
+                                  title: titleEditingController.text,
+                                  content: contentEditingController.text,
+                                ));
 
-                            debugPrint('사용자 입력 트루');
+                                debugPrint('사용자 입력 트루');
 
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('글 작성이 완료되었습니다')));
-                            // Navigator.of(context).pushNamed('/board');
-                            Navigator.of(context).pushNamedAndRemoveUntil(Routes.board, (route) => false);
-                          },
-                          child:
-                          AutoSizeText(
-                            '등록',
-                            style: TextStyle(fontSize: 20, color: AppColors.white),
-                            maxLines: 1,
-                          )
-                              ) :
-                      TextButton(
-                          onPressed: () async {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('글 제목과 내용을 모두 입력해주세요')));
-                          },
-                          child:
-                          AutoSizeText(
-                            '등록',
-                            style: TextStyle(fontSize: 20, color: AppColors.chipBlue),
-                            maxLines: 1,
-                          ),
-                      )
-                      ],
-                  )
-                  );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('글 작성이 완료되었습니다')));
+                                // Navigator.of(context).pushNamed('/board');
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                    Routes.board, (route) => false);
+                              },
+                              child: AutoSizeText(
+                                '등록',
+                                style: TextStyle(
+                                    fontSize: 20, color: AppColors.white),
+                                maxLines: 1,
+                              ))
+                          : TextButton(
+                              onPressed: () async {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('글 제목과 내용을 모두 입력해주세요')));
+                              },
+                              child: AutoSizeText(
+                                '등록',
+                                style: TextStyle(
+                                    fontSize: 20, color: AppColors.chipBlue),
+                                maxLines: 1,
+                              ),
+                            )
+                    ],
+                  ));
             })
           ],
         ),
@@ -112,7 +110,7 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
             return SingleChildScrollView(
                 child: SafeArea(
                     child: Container(
-                      // color: Colors.lightBlueAccent,
+              // color: Colors.lightBlueAccent,
               height: appHeight,
               // width: width,
               child: Column(
@@ -121,8 +119,8 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Container(
-                        width: 200,
-                        padding: AppEdgeInsets.horizontal16,
+                      width: 200,
+                      padding: AppEdgeInsets.horizontal16,
                     ),
                   ),
                   Container(
@@ -190,7 +188,6 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
                       style: theme.textTheme.bodyText2!
                           .apply(color: AppColors.text50),
                       onChanged: (text) {
-
                         if (0 < text.length) {
                           _postController.contentInputSub.sink.add(true);
                         } else if (text.length == 0) {
@@ -208,11 +205,10 @@ class _PostWriteScreenState extends State<PostWriteScreen> {
   }
 
   @override
-  dispose() async{
+  dispose() async {
     debugPrint('>>>>> Dispose post_write_screen ');
     titleEditingController.dispose();
     contentEditingController.dispose();
     super.dispose();
   }
-
 }

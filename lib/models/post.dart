@@ -32,14 +32,24 @@ class Post {
     deleteFlag: json['deleteFlag'],
   );
 
-  Map<String, dynamic> toJson() {
-    return {
-      'writer': writer,
-      'title': title,
-      'content': content,
-      'isCreatedAt': isCreatedAt,
-      'uid': uid,
+  // Map<String, dynamic> toJson() {
+  //   return {
+  //     'writer': writer,
+  //     'title': title,
+  //     'content': content,
+  //     'isCreatedAt': isCreatedAt,
+  //     'uid': uid,
+  //   };
+  // }
 
-    };
-  }
+  // Map<String, dynamic> toMap({ int? nodeId }) {
+  //   final Map<String, dynamic> event = <String, dynamic>{
+  //     'type': type,
+  //     'data': getDataMap(),
+  //   };
+  //   if (nodeId != null)
+  //     event['nodeId'] = nodeId;
+  //
+  //   return event;
+  // }
 }

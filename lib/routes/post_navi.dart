@@ -13,14 +13,12 @@ class PostNavigator extends StatefulWidget {
 
 class _PostNavigator extends State<PostNavigator> {
 
-  GlobalKey<NavigatorState> _userInfoNaviKey = GlobalKey<NavigatorState>();
+  GlobalKey<NavigatorState> _postNavi = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
-    print('포스트 네비게이터 빌드 >> ');
-
     return Navigator(
-      key : _userInfoNaviKey,
+      key : _postNavi,
       onGenerateRoute: (RouteSettings settings) {
         return MaterialPageRoute(
             settings: settings,
